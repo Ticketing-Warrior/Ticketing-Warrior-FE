@@ -1,5 +1,5 @@
 import React from 'react';
-import './SeatMapPage.css';
+import './ResultPage.css';
 
 function ResultPage() {
   return (
