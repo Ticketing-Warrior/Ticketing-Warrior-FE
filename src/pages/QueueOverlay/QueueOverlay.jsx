@@ -12,7 +12,7 @@ const QueueOverlay = ({ initialQueue, onComplete }) => {
   // -----------------------------------------------------------
   // 설정: 테스트 모드 (true) 또는 실제 연동 모드 (false)
   // true로 설정하면 백엔드 서버 없이 가상 카운트다운 테스트 가능
-  const IS_MOCK_TEST_MODE = true; 
+  const IS_MOCK_TEST_MODE = true;
   // -----------------------------------------------------------
 
 

@@ -114,8 +114,8 @@ const StartPage = ({ onQueueEnter }) => {
   return (
     <div className="start-page">
       <div className="start-container">
-        <h1 className="start-title">🎫 티켓 예매 훈련</h1>
-        <p className="start-subtitle">실전같은 예매 연습으로 빠른 손가락을 만들어보세요!</p>
+        <h1 className="start-title">Ticketing Warrior</h1>
+        <p className="start-subtitle">실전같은 티켓팅 예매 연습을 해보세요!</p>
         
         {/* 닉네임 입력 및 저장 버튼 그룹 */}
         <div className="nickname-input-group">
