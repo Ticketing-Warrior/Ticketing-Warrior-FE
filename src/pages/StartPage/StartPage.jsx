@@ -14,7 +14,7 @@ const StartPage = ({ onQueueEnter }) => {
 
   // -----------------------------------------------------------
   // 설정: 테스트 모드 (true) 또는 실제 연동 모드 (false)
-  const IS_MOCK_TEST_MODE = true; 
+  const IS_MOCK_TEST_MODE = false; 
   // -----------------------------------------------------------
 
   // **추가**: 컴포넌트 마운트 시 localStorage의 닉네임을 불러와 input에 표시
