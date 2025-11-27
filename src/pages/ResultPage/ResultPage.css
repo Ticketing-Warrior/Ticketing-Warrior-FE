@@ -93,14 +93,28 @@
   text-align: center;
 }
 
-.card-content {
+.card-content1 {
   flex: 1;
+  margin-left: 65px;
 }
 
-.card-label {
+.card-content2 {
+  flex: 1;
+  margin-left: 10px;
+}
+
+.card-label1 {
   font-size: 0.9rem;
   color: #6b7280;
   margin-bottom: 5px;
+  margin-left: 10px;
+  font-weight: 500;
+}
+.card-label2 {
+  font-size: 0.9rem;
+  color: #6b7280;
+  margin-bottom: 5px;
+  margin-left: 20px;
   font-weight: 500;
 }
 
@@ -108,16 +122,6 @@
   font-size: 1.8rem;
   font-weight: 700;
   color: #1f2937;
-}
-
-.performance-badge {
-  display: inline-block;
-  padding: 6px 16px;
-  border-radius: 20px;
-  color: white;
-  font-size: 0.85rem;
-  font-weight: 600;
-  margin-top: 8px;
 }
 
 .result-info {
