@@ -44,9 +44,8 @@ function CooldownPage({ onComplete }) {
     <div className="cooldown-page">
       <div className="cooldown-container">
         <div className="cooldown-header">
-          <div className="header-icon">⏰</div>
           <h1>쿨다운 시간</h1>
-          <p>잠시 후 다시 도전할 수 있습니다</p>
+          <p>30초 뒤에 다시 도전할 수 있습니다</p>
         </div>
 
         <div className="timer-section">
@@ -91,7 +90,7 @@ function CooldownPage({ onComplete }) {
           onClick={handleRetry}
           disabled={!isComplete}
         >
-          {isComplete ? '🚀 재도전하기' : `⏳ ${timeLeft}초 후 재도전 가능`}
+          {isComplete ? '재도전하기' : `${timeLeft}초 후 재도전 가능`}
         </button>
       </div>
     </div>
