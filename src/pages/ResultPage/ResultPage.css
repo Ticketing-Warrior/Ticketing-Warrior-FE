@@ -34,12 +34,6 @@
   margin-bottom: 40px;
 }
 
-.success-icon {
-  font-size: 4rem;
-  margin-bottom: 15px;
-  animation: bounce 1s ease infinite;
-}
-
 @keyframes bounce {
   0%, 100% {
     transform: translateY(0);
@@ -51,7 +45,7 @@
 
 .success-badge h1 {
   font-size: 2.2rem;
-  color: #8b5cf6;
+  color: #ff7fa8;
   margin-bottom: 10px;
   font-weight: 700;
 }
@@ -71,21 +65,21 @@
 .result-card {
   display: flex;
   align-items: center;
-  gap: 20px;
+  gap: 10px;
   padding: 30px 25px;
   border-radius: 20px;
-  border: 2px solid #fbbf24;
+  border: 2px solid #6e347b;
   transition: all 0.3s ease;
 }
 
 .result-card:hover {
   transform: translateY(-3px);
-  box-shadow: 0 8px 20px rgba(251, 191, 36, 0.3);
+  box-shadow: 0 8px 20px rgba(228, 164, 255, 0.3);
 }
 
 .time-card {
-  background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
-  border-color: #fbbf24;
+  background: linear-gradient(135deg, #f3e8ff 0%, #e9d5ff 100%);
+  border-color: #a78bfa;
 }
 
 .performance-card {
@@ -185,29 +179,17 @@
 }
 
 .retry-button {
-  background: linear-gradient(135deg, #60a5fa 0%, #3b82f6 100%);
+  background: linear-gradient(135deg, #ffccd7 0%, #ff9fb7 100%);
   color: white;
-  box-shadow: 0 4px 15px rgba(59, 130, 246, 0.3);
+  box-shadow: 0 4px 15px rgba(248, 124, 255, 0.3);
 }
 
 .retry-button:hover {
   transform: translateY(-2px);
-  box-shadow: 0 6px 20px rgba(59, 130, 246, 0.4);
+  box-shadow: 0 6px 20px rgba(248, 124, 255, 0.3);
 }
 
-.confirm-button {
-  background: linear-gradient(135deg, #34d399 0%, #10b981 100%);
-  color: white;
-  box-shadow: 0 4px 15px rgba(16, 185, 129, 0.3);
-}
-
-.confirm-button:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 6px 20px rgba(16, 185, 129, 0.4);
-}
-
-.retry-button:active,
-.confirm-button:active {
+.retry-button:active {
   transform: translateY(0);
 }
 

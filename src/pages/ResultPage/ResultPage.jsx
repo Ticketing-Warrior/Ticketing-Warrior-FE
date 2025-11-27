@@ -18,13 +18,13 @@ function ResultPage({ onRetry }) {
 
   const getPerformanceMessage = () => {
     if (stats.percentile <= 5) {
-      return { emoji: '🏆', text: '최상위권', color: '#f59e0b' };
+      return { text: '최상위권', color: '#3b82f6' };
     } else if (stats.percentile <= 10) {
-      return { emoji: '🥇', text: '상위권', color: '#10b981' };
+      return { text: '상위권', color: '#3b82f6' };
     } else if (stats.percentile <= 20) {
-      return { emoji: '🥈', text: '중상위권', color: '#3b82f6' };
+      return { text: '중상위권', color: '#3b82f6' };
     } else {
-      return { emoji: '🥉', text: '평균', color: '#6b7280' };
+      return { text: '평균', color: '#3b82f6' };
     }
   };
 
@@ -34,14 +34,11 @@ function ResultPage({ onRetry }) {
     <div className="result-page">
       <div className="result-container">
         <div className="success-badge">
-          <div className="success-icon">✨</div>
           <h1>예매 성공!</h1>
-          <p>축하합니다! 좌석 예매에 성공했습니다.</p>
         </div>
 
         <div className="result-details">
           <div className="result-card time-card">
-            <div className="card-icon">⏱️</div>
             <div className="card-content">
               <div className="card-label">총 소요 시간</div>
               <div className="card-value">{stats.totalTime}초</div>
@@ -72,18 +69,12 @@ function ResultPage({ onRetry }) {
             className="retry-button"
             onClick={onRetry}
           >
-            🔄 재도전하기
-          </button>
-          <button 
-            className="confirm-button"
-            onClick={onRetry}
-          >
-            ✅ 확인
+            재도전하기
           </button>
         </div>
 
         <div className="result-footer">
-          <p>💡 더 빠른 예매를 위해 다시 도전해보세요!</p>
+          <p>더 빠른 예매를 위해 다시 도전해보세요!</p>
         </div>
       </div>
     </div>
