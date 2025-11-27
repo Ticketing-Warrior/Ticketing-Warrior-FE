@@ -1,6 +1,6 @@
 .start-page {
   min-height: 100vh;
-  background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%);
+  background: #7c37d0;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -32,14 +32,14 @@
 .start-title {
   font-size: 36px;
   font-weight: bold;
-  color: #6b7280;
+  color: #45484d;
   text-align: center;
   margin-bottom: 15px;
 }
 
 .start-subtitle {
   font-size: 14px;
-  color: #9ca3af;
+  color: #6a6f76;
   text-align: center;
   margin-bottom: 30px;
 }
@@ -63,7 +63,7 @@
 .save-nickname-button {
     flex-shrink: 0;
     padding: 10px 20px;
-    background-color: #a6c1ee;
+    background-color: #7c37d0;
     border: none;
     border-radius: 12px;
     font-size: 16px;
@@ -96,7 +96,7 @@
 .booking-button {
   width: 100%;
   padding: 15px;
-  background: linear-gradient(135deg, #fbc2eb 0%, #a6c1ee 100%);
+  background: #7c37d0;
   border: none;
   border-radius: 12px;
   font-size: 18px;

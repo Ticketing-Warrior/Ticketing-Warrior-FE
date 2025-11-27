@@ -4,7 +4,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  background: linear-gradient(135deg, #a8d8ff 0%, #c7b3ff 50%, #ffc8dd 100%);
+  background: #7c37d0;
   padding: 20px;
 }
 
@@ -51,13 +51,13 @@
 
 .cooldown-header h1 {
   font-size: 2rem;
-  color: #6366f1;
+  color: #7c37d0;
   margin-bottom: 10px;
   font-weight: 700;
 }
 
 .cooldown-header p {
-  color: #9ca3af;
+  color: #72757a;
   font-size: 0.95rem;
 }
 
@@ -82,7 +82,7 @@
 
 .timer-bg {
   fill: none;
-  stroke: #e5e7eb;
+  stroke: #d6d8db;
   stroke-width: 12;
 }
 
@@ -105,14 +105,14 @@
 .timer-value {
   font-size: 3.5rem;
   font-weight: 700;
-  color: #6366f1;
+  color: #7c37d0;
   margin-bottom: 5px;
   font-variant-numeric: tabular-nums;
 }
 
 .timer-label {
   font-size: 1rem;
-  color: #9ca3af;
+  color: #7a7e85;
   font-weight: 500;
 }
 
@@ -149,14 +149,14 @@
 }
 
 .retry-button.active {
-  background: linear-gradient(135deg, #77bbfb 0%, #4dafff 100%);
+  background: #7c37d0;
   color: white;
-  box-shadow: 0 4px 15px rgba(51, 175, 247, 0.3);
+  box-shadow: 0 4px 15px rgba(139, 92, 246, 0.3);
 }
 
 .retry-button.active:hover {
   transform: translateY(-2px);
-  box-shadow: 0 6px 20px rgba(51, 175, 247, 0.3);
+  box-shadow: 0 6px 20px rgba(139, 92, 246, 0.3);
 }
 
 .retry-button.active:active {
