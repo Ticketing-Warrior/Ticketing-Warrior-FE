@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import './QueueOverlay.css';
+import { getMyPos } from '../../api/queue';
 
-const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
+const VITE_SERVER_API_URL = import.meta.env.VITE_VITE_SERVER_API_URL;
 // API 경로 설정 (Path Variable을 사용하므로 {nickname}은 코드 내에서 대체됨)
 const API_STATUS_PATH_TEMPLATE = '/api/queue/get-pos/'; 
 const POLL_INTERVAL = 500; // 0.5초마다 폴링
@@ -12,7 +13,7 @@ const QueueOverlay = ({ initialQueue, onComplete }) => {
   // -----------------------------------------------------------
   // 설정: 테스트 모드 (true) 또는 실제 연동 모드 (false)
   // true로 설정하면 백엔드 서버 없이 가상 카운트다운 테스트 가능
-  const IS_MOCK_TEST_MODE = true;
+  const IS_MOCK_TEST_MODE = false
   // -----------------------------------------------------------
 
 
@@ -45,11 +46,6 @@ const QueueOverlay = ({ initialQueue, onComplete }) => {
       // REAL API (실제 연동용) 로직: Path Variable을 사용한 대기열 순번 조회
       // =======================================================
       
-      if (!API_BASE_URL) {
-          console.error("API 연동 오류: 환경 변수 VITE_API_BASE_URL이 설정되지 않았습니다.");
-          return; 
-      }
-      
       const pollQueue = async () => {
         try {
           const nickname = sessionStorage.getItem('nickname'); // 닉네임 가져오기
@@ -59,21 +55,7 @@ const QueueOverlay = ({ initialQueue, onComplete }) => {
               return; 
           }
           
-          // 전체 API URL 구성: http://localhost:8080/api/queue/get-pos/user123
-          const fullApiUrl = `${API_BASE_URL}${API_STATUS_PATH_TEMPLATE}${nickname}`;
-          console.log('API 폴링 URL:', fullApiUrl);
-          
-          const response = await fetch(fullApiUrl, {
-            method: 'GET', // GET 요청
-            headers: { 'Content-Type': 'application/json' }
-          });
-          
-          if (!response.ok) {
-            throw new Error(`대기열 조회 실패: HTTP 상태 ${response.status}`);
-          }
-          
-          const data = await response.json();
-          // 백엔드 응답에서 대기열 순번 필드 가져오기 (예: data.currentPosition)
+          const data = await getMyPos(nickname);
           const currentPosition = data.currentPosition || 0; 
           
           setQueueNumber(currentPosition);
