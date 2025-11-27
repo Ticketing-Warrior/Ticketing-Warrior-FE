@@ -1,33 +1,88 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react'; 
 import './SeatMapPage.css';
 
-function SeatMapPage({ onBookingSuccess }) {
+// 💡 Mock API 함수
+// API 경로와 메서드에 따라 가짜 응답을 반환합니다.
+const mockApiCall = (path, options) => {
+    return new Promise((resolve, reject) => {
+        // 네트워크 지연 시뮬레이션
+        setTimeout(() => {
+            if (path === '/api/ticketing/start') {
+                // 티켓팅 시작 API는 항상 성공한다고 가정
+                resolve({ ok: true, json: async () => ({ status: 'started' }) });
+            } else if (path === '/api/ticketing/reserve') {
+                // 예매 API는 외부 상태 (isMockSuccess)에 따라 성공/실패 결정
+                const isSuccess = options.isMockSuccess;
+                if (isSuccess) {
+                    resolve({ ok: true, json: async () => ({ status: 'success', seatId: options.body.seatId }) });
+                } else {
+                    // 409 Conflict (이미 선택된 좌석) 시뮬레이션
+                    reject({ message: '409 Conflict: Seat already occupied' }); 
+                }
+            } else {
+                reject(new Error('Unknown API path'));
+            }
+        }, 500 + Math.random() * 500); // 0.5초 ~ 1초 랜덤 지연
+    });
+};
+
+
+function SeatMapPage({ onBookingSuccess, nickname = "user1234" }) {
   const ROWS = 10;
   const COLS = 10;
   
   const [selectedSeat, setSelectedSeat] = useState(null);
   const [isReserving, setIsReserving] = useState(false);
   const [clickTime, setClickTime] = useState(null);
+  const [isApiLoading, setIsApiLoading] = useState(true); 
+  const [apiError, setApiError] = useState(null);
+  
+  // 💡 Mock API 성공 여부를 토글하기 위한 상태 추가
+  const [isMockSuccess, setIsMockSuccess] = useState(true);
 
   const [seats, setSeats] = useState(() => {
-  const newSeats = [];
-  for (let row = 0; row < 10; row++) {
-    for (let col = 0; col < 10; col++) {
-      newSeats.push({
-        id: `${row}-${col}`,
-        row,
-        col,
-        status: 'available',
-      });
+    const newSeats = [];
+    for (let row = 0; row < 10; row++) {
+      for (let col = 0; col < 10; col++) {
+        newSeats.push({
+          id: `${row}-${col}`,
+          row,
+          col,
+          status: 'available',
+        });
+      }
     }
-  }
-  return newSeats;
-});
+    return newSeats;
+  });
+
+  // 티켓팅 시작 API 호출 (Mock 적용)
+  useEffect(() => {
+    const startTicketing = async () => {
+      try {
+        setApiError(null);
+        // Mock API 호출로 대체
+        await mockApiCall('/api/ticketing/start', { 
+            method: 'POST', 
+            body: { nickname }
+        });
+        
+        console.log(`[Mock] 티켓팅 시작 API 호출 성공: /api/ticketing/start (닉네임: ${nickname})`);
+
+      } catch (error) {
+        console.error('[Mock] API Error:', error.message);
+        setApiError('티켓팅 시스템에 접속할 수 없습니다.');
+      } finally {
+        setIsApiLoading(false);
+      }
+    };
+
+    startTicketing();
+  }, [nickname]);
 
 
   // 좌석 새로고침 (서버에서 최신 상태 가져오기 시뮬레이션)
   const handleRefresh = () => {
-    // 랜덤하게 일부 좌석을 선점된 상태로 변경
+    // ... (기존 로직 유지)
     setSeats(prevSeats => 
       prevSeats.map(seat => {
         if (seat.status === 'selected') {
@@ -43,11 +98,10 @@ function SeatMapPage({ onBookingSuccess }) {
     setSelectedSeat(null);
   };
 
-  // 좌석 선택
+  // 좌석 선택 (기존 로직 유지)
   const handleSeatClick = (seat, event) => {
-    if (seat.status !== 'available' || isReserving) return;
+    if (seat.status !== 'available' || isReserving || isApiLoading || apiError) return;
 
-    // 클릭 시간과 좌표 기록
     const clickData = {
       seatId: seat.id,
       timestamp: new Date().getTime(),
@@ -57,7 +111,6 @@ function SeatMapPage({ onBookingSuccess }) {
     
     setClickTime(clickData);
     
-    // 이전 선택 해제 및 새로운 좌석 선택
     setSeats(prevSeats => 
       prevSeats.map(s => ({
         ...s,
@@ -68,36 +121,44 @@ function SeatMapPage({ onBookingSuccess }) {
     setSelectedSeat(seat);
   };
 
-  // 좌석 예매
-  const handleReservation = () => {
-    if (!selectedSeat || isReserving) return;
+  // 좌석 예매 (Mock 적용)
+  const handleReservation = async () => {
+    if (!selectedSeat || isReserving || isApiLoading || apiError) return;
 
     setIsReserving(true);
 
-    // API 호출 시뮬레이션
-    setTimeout(() => {
-      // 80% 성공, 20% 이선좌 (실패)
-      const isSuccess = Math.random() < 0.8;
+    try {
+        // Mock API 호출로 대체
+        await mockApiCall('/api/ticketing/reserve', { 
+            method: 'POST',
+            body: { seatId: selectedSeat.id },
+            isMockSuccess: isMockSuccess // Mock 성공 여부 전달
+        });
+        
+        console.log(`[Mock] 예매 성공: ${selectedSeat.id}`);
 
-      if (isSuccess) {
         if (onBookingSuccess) {
-          onBookingSuccess({
-            seatId: selectedSeat.id,
-            clickTime: clickTime,
-          });
+            onBookingSuccess({
+                seatId: selectedSeat.id,
+                clickTime: clickTime,
+            });
         }
-      } else {
-        alert('이미 선택된 좌석입니다.');
-        handleRefresh();
-      }
-      
-      setIsReserving(false);
-    }, 1000);
+
+    } catch (error) {
+        console.error('[Mock] 예매 실패:', error.message);
+        // 이선좌 (409 Conflict) 실패 시
+        alert('이미 선택된 좌석입니다. 다시 시도해주세요.');
+        handleRefresh(); // 좌석 상태 새로고침
+    } finally {
+        setIsReserving(false);
+    }
   };
 
   const getSeatLabel = (row, col) => {
     return `${String.fromCharCode(65 + row)}${col + 1}`;
   };
+
+  const isInteractionDisabled = isReserving || isApiLoading || apiError;
 
   return (
     <div className="seatmap-page">
@@ -106,28 +167,36 @@ function SeatMapPage({ onBookingSuccess }) {
           <h1>좌석 선택</h1>
         </div>
 
+        {/* Mock API 토글 버튼 */}
+        <div className="mock-controls">
+            <button
+                onClick={() => setIsMockSuccess(prev => !prev)}
+                className={isMockSuccess ? 'success-toggle' : 'fail-toggle'}
+            >
+                Mock 예매: **{isMockSuccess ? '🟢 성공' : '🔴 실패'}**
+            </button>
+            <span className="mock-info">
+                *클릭 시 다음 예매 API 호출 성공/실패 토글
+            </span>
+        </div>
+        
+        {/* 로딩/에러 메시지 표시 */}
+        {isApiLoading && <div className="status-message loading">티켓팅 시스템 접속 중...</div>}
+        {apiError && <div className="status-message error">⚠️ 오류: {apiError}</div>}
+
         <div className="seatmap-controls">
           <button 
             className="refresh-btn"
             onClick={handleRefresh}
-            disabled={isReserving}
+            disabled={isInteractionDisabled} 
           >
             🔄 새로고침
           </button>
           
           <div className="seat-legend">
-            <div className="legend-item">
-              <div className="legend-color available"></div>
-              <span>선택 가능</span>
-            </div>
-            <div className="legend-item">
-              <div className="legend-color selected"></div>
-              <span>선택됨</span>
-            </div>
-            <div className="legend-item">
-              <div className="legend-color occupied"></div>
-              <span>선점됨</span>
-            </div>
+            <div className="legend-item"><div className="legend-color available"></div><span>선택 가능</span></div>
+            <div className="legend-item"><div className="legend-color selected"></div><span>선택됨</span></div>
+            <div className="legend-item"><div className="legend-color occupied"></div><span>선점됨</span></div>
           </div>
         </div>
 
@@ -139,7 +208,7 @@ function SeatMapPage({ onBookingSuccess }) {
           {seats.map(seat => (
             <div
               key={seat.id}
-              className={`seat ${seat.status}`}
+              className={`seat ${seat.status} ${isInteractionDisabled ? 'disabled-seat' : ''}`} 
               onClick={(e) => handleSeatClick(seat, e)}
               title={getSeatLabel(seat.row, seat.col)}
             >
@@ -159,7 +228,7 @@ function SeatMapPage({ onBookingSuccess }) {
             <button
               className={`reserve-btn ${isReserving ? 'loading' : ''}`}
               onClick={handleReservation}
-              disabled={isReserving}
+              disabled={isInteractionDisabled || !selectedSeat}
             >
               {isReserving ? '예매 중...' : '좌석 예매하기'}
             </button>

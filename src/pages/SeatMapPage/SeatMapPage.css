@@ -316,3 +316,42 @@
     font-size: 0.8rem;
   }
 }
+
+/* 목데이터 css */
+
+.mock-controls {
+    margin: 10px 0;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    background-color: #f9f9f9;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.mock-controls button {
+    padding: 8px 15px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: background-color 0.2s;
+}
+
+.mock-controls .success-toggle {
+    background-color: #e6ffed;
+    color: #1e8449;
+    border: 1px solid #1e8449;
+}
+
+.mock-controls .fail-toggle {
+    background-color: #ffe6e6;
+    color: #c0392b;
+    border: 1px solid #c0392b;
+}
+
+.mock-info {
+    font-size: 0.8em;
+    color: #666;
+}
