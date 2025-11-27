@@ -6,6 +6,7 @@ import SeatMapPage from './pages/SeatMapPage/SeatMapPage';
 import ResultPage from './pages/ResultPage/ResultPage';
 import CooldownPage from './pages/CooldownPage/CooldownPage';
 import './App.css';
+import NicknameDisplay from './components/NicknameDisplay';
 
 const App = () => {
   const [currentPage, setCurrentPage] = useState('start');
@@ -13,6 +14,7 @@ const App = () => {
 
   return (
     <>
+      <NicknameDisplay />
       {currentPage === 'start' && (
         <StartPage 
           onQueueEnter={(data) => {

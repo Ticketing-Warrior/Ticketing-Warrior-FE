@@ -44,15 +44,43 @@
   margin-bottom: 30px;
 }
 
+.nickname-input-group {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
 .nickname-input {
-  width: 100%;
-  padding: 15px;
-  border: 2px solid #e0e7ff;
-  border-radius: 12px;
-  font-size: 16px;
-  margin-bottom: 20px;
-  transition: border-color 0.3s;
-  box-sizing: border-box;
+    flex-grow: 1;
+    padding: 15px;
+    border: 2px solid #e0e7ff;
+    border-radius: 12px;
+    font-size: 16px;
+    transition: border-color 0.3s;
+    box-sizing: border-box;
+}
+
+.save-nickname-button {
+    flex-shrink: 0;
+    padding: 10px 20px;
+    background-color: #a6c1ee;
+    border: none;
+    border-radius: 12px;
+    font-size: 16px;
+    font-weight: bold;
+    color: white;
+    cursor: pointer;
+    transition: background-color 0.2s;
+    height: 54px;
+}
+
+.save-nickname-button:hover:not(:disabled) {
+    background-color: #8faee5;
+}
+
+.save-nickname-button:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
 }
 
 .nickname-input:focus {
