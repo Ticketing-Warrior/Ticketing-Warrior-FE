@@ -1,5 +1,5 @@
 # 1. Build Stage
-FROM node:20-slim as builder
+FROM node:20-alpine as builder
 
 # 작업 디렉토리(Working Directory): 컨테이너 내부의 /app 폴더를 작업 공간으로 정의
 WORKDIR /app
