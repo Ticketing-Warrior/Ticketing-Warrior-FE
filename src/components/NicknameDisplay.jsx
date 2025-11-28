@@ -34,7 +34,7 @@ const NicknameDisplay = () => {
 
   return (
     <div className="nickname-display">
-      {nickname}님
+      {nickname} 님
     </div>
   );
 };

@@ -4,7 +4,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  background: linear-gradient(135deg, #ddd6f3 0%, #faaca8 50%, #ffefba 100%);
+  background: #7c37d0;
   padding: 20px;
 }
 
@@ -45,7 +45,7 @@
 
 .success-badge h1 {
   font-size: 2.2rem;
-  color: #ff7fa8;
+  color: #7c37d0;
   margin-bottom: 10px;
   font-weight: 700;
 }
@@ -68,7 +68,7 @@
   gap: 10px;
   padding: 30px 25px;
   border-radius: 20px;
-  border: 2px solid #6e347b;
+  border: 2px solid #7c37d0;
   transition: all 0.3s ease;
 }
 
@@ -93,14 +93,28 @@
   text-align: center;
 }
 
-.card-content {
+.card-content1 {
   flex: 1;
+  margin-left: 65px;
 }
 
-.card-label {
+.card-content2 {
+  flex: 1;
+  margin-left: 10px;
+}
+
+.card-label1 {
   font-size: 0.9rem;
   color: #6b7280;
   margin-bottom: 5px;
+  margin-left: 10px;
+  font-weight: 500;
+}
+.card-label2 {
+  font-size: 0.9rem;
+  color: #6b7280;
+  margin-bottom: 5px;
+  margin-left: 20px;
   font-weight: 500;
 }
 
@@ -108,16 +122,6 @@
   font-size: 1.8rem;
   font-weight: 700;
   color: #1f2937;
-}
-
-.performance-badge {
-  display: inline-block;
-  padding: 6px 16px;
-  border-radius: 20px;
-  color: white;
-  font-size: 0.85rem;
-  font-weight: 600;
-  margin-top: 8px;
 }
 
 .result-info {
@@ -179,14 +183,14 @@
 }
 
 .retry-button {
-  background: linear-gradient(135deg, #ffccd7 0%, #ff9fb7 100%);
+  background: #7c37d0;
   color: white;
-  box-shadow: 0 4px 15px rgba(248, 124, 255, 0.3);
+  box-shadow: 0 4px 15px rgba(136, 100, 255, 0.3);
 }
 
 .retry-button:hover {
   transform: translateY(-2px);
-  box-shadow: 0 6px 20px rgba(248, 124, 255, 0.3);
+  box-shadow: 0 6px 20px rgba(136, 100, 255, 0.3);
 }
 
 .retry-button:active {
@@ -200,7 +204,7 @@
 }
 
 .result-footer p {
-  color: #9ca3af;
+  color: #72757a;
   font-size: 0.9rem;
 }
 

@@ -30,23 +30,17 @@ function CaptchaPage({ onVerifySuccess }) {
     // 답변 검증
     setTimeout(() => {
       if (parseInt(userInput) === captchaData.answer) {
-        // 성공
+        // 성공하면 좌석 예매 페이지로 라우팅
         if (onVerifySuccess) {
           onVerifySuccess();
         }
       } else {
-        // 실패 - 새로운 CAPTCHA 생성
+        // 실패하면 새로운 CAPTCHA 생성
         setError('인증에 실패했습니다. 다시 시도해주세요.');
         generateCaptcha();
       }
       setIsLoading(false);
     }, 500);
-  };
-
-  const handleKeyPress = (e) => {
-    if (e.key === 'Enter') {
-      handleVerify();
-    }
   };
 
   return (
@@ -78,7 +72,6 @@ function CaptchaPage({ onVerifySuccess }) {
               placeholder="답을 입력하세요"
               value={userInput}
               onChange={(e) => setUserInput(e.target.value)}
-              onKeyPress={handleKeyPress}
               disabled={isLoading}
             />
             

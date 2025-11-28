@@ -42,7 +42,7 @@ jobs:
         run: |
           aws s3 sync /tmp/dist s3://${{ env.S3_BUCKET_NAME }} --delete
 
-      # CloudFront 캐시 무효화.
+      # CloudFront 캐시 무효화
       - name: CloudFront Invalidation
         run: |
           aws cloudfront create-invalidation \
