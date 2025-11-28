@@ -4,7 +4,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  background: linear-gradient(135deg, #ffd1dc 0%, #d4a5ff 50%, #a8d8ff 100%);
+  background: #7c37d0;
   padding: 20px;
 }
 
@@ -36,7 +36,7 @@
 
 .captcha-header h1 {
   font-size: 2rem;
-  color: #8b5cf6;
+  color: #7c37d0;
   margin-bottom: 10px;
   font-weight: 700;
 }
@@ -60,21 +60,22 @@
   background: linear-gradient(135deg, #ffeef8 0%, #f3e5ff 100%);
   padding: 30px;
   border-radius: 20px;
-  border: 3px dashed #d4a5ff;
+  border: 3px dashed #7c37d0;
 }
 
 .captcha-text {
   font-size: 2.5rem;
   font-weight: 700;
-  color: #8b5cf6;
+  color: #7c37d0;
   letter-spacing: 5px;
   user-select: none;
 }
 
 .refresh-button {
   background: #fff;
-  border: 2px solid #d4a5ff;
+  border: 2px solid #7c37d0;
   border-radius: 50%;
+  margin-left: 15px;
   width: 45px;
   height: 45px;
   display: flex;
@@ -86,9 +87,9 @@
 }
 
 .refresh-button:hover {
-  background: #d4a5ff;
+  background: #7c37d0;
   transform: rotate(180deg);
-  border-color: #8b5cf6;
+  border-color: #7c37d0;
 }
 
 .refresh-button:active {
@@ -111,7 +112,7 @@
   transition: all 0.3s ease;
   text-align: center;
   font-weight: 600;
-  color: #6b21a8;
+  color: #7c37d0;
 }
 
 .captcha-input:focus {
@@ -147,7 +148,7 @@
   font-size: 1.1rem;
   font-weight: 700;
   color: #fff;
-  background: linear-gradient(135deg, #8b5cf6 0%, #a78bfa 100%);
+  background: #7c37d0;
   border: none;
   border-radius: 15px;
   cursor: pointer;

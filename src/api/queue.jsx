@@ -2,7 +2,7 @@ import { axiosInstance } from './axios';
 
 export const getMyPos = async (nickname) => {
     try{
-        const { data } = await axiosInstance.get(`/api/queue/${nickname}`);
+        const { data } = await axiosInstance.get(`/api/queue/get-pos/${nickname}`);
         return data;
 
     }catch(err){
