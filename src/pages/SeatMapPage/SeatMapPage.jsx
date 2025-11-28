@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import "./SeatMapPage.css";
-import { getAllSeat, lockSeat, getOneSeat } from "../../api/ticket";
+import { getAllSeat, lockSeat, getOneSeat } from "../../api/seat";
 
 function SeatMapPage({ onBookingSuccess }) {
   const [seats, setSeats] = useState([]);
@@ -14,26 +14,7 @@ function SeatMapPage({ onBookingSuccess }) {
     getSeats();
   }, []);
 
-  // ---------------------------
-  // 전체 좌석 조회
-  // ---------------------------
-  const getSeats = async () => {
-    setLoadingSeats(true);
-    try {
-      const data = await getAllSeat();
-      setSeats(data.seats || []);
-      setApiError(null);
-    } catch (error) {
-      console.error("좌석 조회 실패", error);
-      setApiError("좌석 정보를 불러올 수 없습니다.");
-    } finally {
-      setLoadingSeats(false);
-    }
-  };
-
-  // ---------------------------
-  // 단일 좌석 조회
-  // ---------------------------
+  // 단일 좌석 상태 조회
   const handleSeatClick = async (seatId) => {
     try {
       const { seat } = await getOneSeat(seatId);
@@ -48,9 +29,22 @@ function SeatMapPage({ onBookingSuccess }) {
     }
   };
 
-  // --------------------------------------
+  // 전체 좌석 상태 조회
+  const getSeats = async () => {
+    setLoadingSeats(true);
+    try {
+      const data = await getAllSeat();
+      setSeats(data.seats || []);
+      setApiError(null);
+    } catch (error) {
+      console.error("좌석 조회 실패", error);
+      setApiError("좌석 정보를 불러올 수 없습니다.");
+    } finally {
+      setLoadingSeats(false);
+    }
+  };
+
   // 예매하기 버튼 누르면 동작하는 함수
-  // --------------------------------------
   const handleReservation = async () => {
     if (!selectedSeat || isReserving) return;
     setIsReserving(true);
