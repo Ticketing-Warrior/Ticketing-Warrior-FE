@@ -27,8 +27,8 @@ const StartPage = ({ onQueueEnter }) => {
     }
     
     localStorage.setItem('nickname', trimmedNickname);
-    window.dispatchEvent(new Event('storage')); 
-    setIsNicknameSaved(true); 
+    window.dispatchEvent(new Event('storage'));
+    setIsNicknameSaved(true);
     alert(`닉네임 "${trimmedNickname}"이 저장되었습니다.`);
   };
 
@@ -50,7 +50,7 @@ const StartPage = ({ onQueueEnter }) => {
       onQueueEnter(data.queuePosition); 
     }
 
- ;} 
+};
 
   return (
     <div className="start-page">
