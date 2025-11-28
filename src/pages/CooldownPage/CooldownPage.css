@@ -1,5 +1,201 @@
-.cooldown-page-container {
-  background-color: #f0f8ff;
-  padding: 30px;
-  text-align: left;
+.cooldown-page {
+  width: 100%;
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: #7c37d0;
+  padding: 20px;
+}
+
+.cooldown-container {
+  background: rgba(255, 255, 255, 0.95);
+  border-radius: 30px;
+  padding: 50px 40px;
+  max-width: 600px;
+  width: 100%;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
+  animation: fadeInUp 0.6s ease;
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.cooldown-header {
+  text-align: center;
+  margin-bottom: 40px;
+}
+
+.header-icon {
+  font-size: 3.5rem;
+  margin-bottom: 15px;
+  animation: swing 2s ease-in-out infinite;
+}
+
+@keyframes swing {
+  0%, 100% {
+    transform: rotate(-10deg);
+  }
+  50% {
+    transform: rotate(10deg);
+  }
+}
+
+.cooldown-header h1 {
+  font-size: 2rem;
+  color: #7c37d0;
+  margin-bottom: 10px;
+  font-weight: 700;
+}
+
+.cooldown-header p {
+  color: #72757a;
+  font-size: 0.95rem;
+}
+
+.timer-section {
+  display: flex;
+  justify-content: center;
+  margin-top: -20px;
+  margin-bottom: 30px;
+}
+
+.timer-circle {
+  position: relative;
+  width: 250px;
+  height: 250px;
+}
+
+.timer-svg {
+  width: 100%;
+  height: 100%;
+  transform: rotate(-90deg);
+}
+
+.timer-bg {
+  fill: none;
+  stroke: #d6d8db;
+  stroke-width: 12;
+}
+
+.timer-progress {
+  fill: none;
+  stroke: url(#gradient);
+  stroke-width: 12;
+  stroke-linecap: round;
+  transition: stroke-dashoffset 0.5s ease;
+}
+
+.timer-content {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+}
+
+.timer-value {
+  font-size: 3.5rem;
+  font-weight: 700;
+  color: #7c37d0;
+  margin-bottom: 5px;
+  font-variant-numeric: tabular-nums;
+}
+
+.timer-label {
+  font-size: 1rem;
+  color: #7a7e85;
+  font-weight: 500;
+}
+
+.waiting-message {
+  margin-bottom: 30px;
+  text-align: center;
+  animation: fadeIn 0.5s ease;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.waiting-message p {
+  color: #6b7280;
+  font-size: 1rem;
+  font-weight: 500;
+}
+
+.retry-button {
+  width: 100%;
+  padding: 20px;
+  font-size: 1.2rem;
+  font-weight: 700;
+  border: none;
+  border-radius: 15px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.retry-button.active {
+  background: #7c37d0;
+  color: white;
+  box-shadow: 0 4px 15px rgba(139, 92, 246, 0.3);
+}
+
+.retry-button.active:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(139, 92, 246, 0.3);
+}
+
+.retry-button.active:active {
+  transform: translateY(0);
+}
+
+.retry-button.disabled {
+  background: linear-gradient(135deg, #e5e7eb 0%, #d1d5db 100%);
+  color: #9ca3af;
+  cursor: not-allowed;
+  box-shadow: none;
+}
+
+/* SVG Gradient */
+@supports (stroke: url(#gradient)) {
+  .timer-svg defs {
+    display: none;
+  }
+}
+
+@media (max-width: 600px) {
+  .cooldown-container {
+    padding: 40px 25px;
+  }
+
+  .cooldown-header h1 {
+    font-size: 1.6rem;
+  }
+
+  .timer-circle {
+    width: 200px;
+    height: 200px;
+  }
+
+  .timer-value {
+    font-size: 2.8rem;
+  }
+
+  .header-icon {
+    font-size: 2.8rem;
+  }
 }

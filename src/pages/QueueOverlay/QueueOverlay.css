@@ -1,5 +1,111 @@
-.queue-overlay-container {
-  background-color: #f0f8ff;
-  padding: 30px;
-  text-align: left;
+.queue-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.7);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  animation: fadeIn 0.3s ease-out;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.queue-overlay-content {
+  background: white;
+  border-radius: 24px;
+  padding: 50px;
+  text-align: center;
+  box-shadow: 0 16px 48px rgba(0, 0, 0, 0.3);
+  animation: scaleUp 0.4s ease-out;
+  min-width: 350px;
+}
+
+@keyframes scaleUp {
+  from {
+    transform: scale(0.8);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+.queue-overlay-title {
+  font-size: 20px;
+  color: #6b7280;
+  margin-bottom: 30px;
+  font-weight: 600;
+}
+
+.queue-overlay-circle {
+  width: 200px;
+  height: 200px;
+  margin: 0 auto 30px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #fbc2eb 0%, #a6c1ee 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+  position: relative;
+}
+
+.queue-overlay-circle::before {
+  content: '';
+  position: absolute;
+  width: 220px;
+  height: 220px;
+  border-radius: 50%;
+  border: 3px solid rgba(251, 194, 235, 0.3);
+  animation: ripple 2s ease-out infinite;
+}
+
+@keyframes ripple {
+  0% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(1.2);
+    opacity: 0;
+  }
+}
+
+.queue-overlay-number {
+  font-size: 64px;
+  font-weight: bold;
+  color: white;
+  animation: pulse 1s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0%, 100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.05);
+  }
+}
+
+.queue-overlay-subtitle {
+  font-size: 16px;
+  color: #9ca3af;
+  margin-bottom: 15px;
+}
+
+.queue-overlay-message {
+  font-size: 14px;
+  color: #d1d5db;
 }
