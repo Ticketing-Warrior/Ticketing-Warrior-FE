@@ -10,24 +10,13 @@ const QueueOverlay = ({ initialQueue, onComplete }) => {
   useEffect(() => {
     let interval;
     const startRealMode = async () => {
-      const nickname = sessionStorage.getItem('nickname');
+      const nickname = localStorage.getItem('nickname');
 
       if (!nickname) {
         console.error('닉네임이 없어 대기열 진입(insertQueue)을 할 수 없습니다');
         return;
       }
 
-      // 1. 대기열 진입
-      try {
-        // console.log(`[Queue] insertQueue 실행`);
-        await insertQueue(nickname);
-        // console.log('[Queue] insertQueue 성공. 폴링 시작.');
-      } catch (err) {
-        console.error('[Queue] insertQueue 실패:', err);
-        return;
-      }
-
-      // 2. 대기열 순번 조회
       const pollQueue = async () => {
         try {
           const data = await getMyPos(nickname);
@@ -35,7 +24,10 @@ const QueueOverlay = ({ initialQueue, onComplete }) => {
           setQueueNumber(currentPosition);
           if (currentPosition === 0) {
             clearInterval(interval);
-            setTimeout(() => onComplete(), 500);
+            await popQueue(nickname);
+            setTimeout(() => {
+              onComplete();
+            }, 500);
           }
         } catch (error) {
           console.error('대기열 조회 오류:', error);

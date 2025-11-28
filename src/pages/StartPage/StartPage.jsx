@@ -16,10 +16,11 @@ const StartPage = ({ onQueueEnter }) => {
     if (savedNickname) {
       setNickname(savedNickname);
     }
-  }, []);
+  }, [nickname]);
 
-  // 닉네임 저장 처리
-  const handleNicknameSave = () => {
+
+  // 대기열 진입 처리
+  const handleQueueEntry = async () => {
     const trimmedNickname = nickname.trim();
     if (!trimmedNickname) {
       alert("닉네임을 입력해 주세요.");
@@ -29,11 +30,7 @@ const StartPage = ({ onQueueEnter }) => {
     localStorage.setItem('nickname', trimmedNickname);
     window.dispatchEvent(new Event('storage')); 
     setIsNicknameSaved(true); 
-    alert(`닉네임 "${trimmedNickname}"이 저장되었습니다.`);
-  };
 
-  // 대기열 진입 처리
-  const handleQueueEntry = async () => {
     const savedNickname = localStorage.getItem('nickname');
     if (!savedNickname) {
       alert("먼저 닉네임을 입력하고 저장해 주세요.");
@@ -41,16 +38,24 @@ const StartPage = ({ onQueueEnter }) => {
     }
 
     setIsLoading(true);
+    
+    try {
+      const data = await insertQueue(savedNickname);
 
-    const data = await insertQueue(savedNickname);
+      if (!data.success) {
+        alert(data.message);
+        setIsLoading(false);
+        return;
+      }
 
-    if (!data.success) {
-      alert(data.message);
-    } else {
-      onQueueEnter(data.queuePosition); 
+      onQueueEnter(data.curPos);
+
+    } catch (err) {
+      alert(err.response?.data?.message || "서버 오류 발생");
+      setIsLoading(false);
     }
 
- ;} 
+ }; 
 
   return (
     <div className="start-page">
@@ -69,13 +74,6 @@ const StartPage = ({ onQueueEnter }) => {
             disabled={isLoading} 
             maxLength={20}
           />
-          <button
-            className="save-nickname-button"
-            onClick={handleNicknameSave}
-            disabled={!nickname.trim() || isLoading} 
-          >
-            입력
-          </button>
         </div>
 
         <button

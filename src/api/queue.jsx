@@ -12,15 +12,23 @@ export const getMyPos = async (nickname) => {
 }
 
 export const insertQueue = async (nickname) => {
-  try {
-    const { data } = await axiosInstance.post("/api/queue/insert", { nickname });
-    return data;
-  } catch (err) {
-    if (err.response) {
-      alert(err.response.data.message || "서버 오류가 발생했습니다.");
-    } else {
-      alert(err.message || "알 수 없는 오류가 발생했습니다.");
-    }
-    throw err;
-  }
+  const { data } = await axiosInstance.post("/api/queue/insert", {
+    nickname,
+  });
+  return data;
 };
+
+export const popQueue = async (nickname) => {
+    try {
+        const { data } = await axiosInstance.post("/api/queue/pop", { nickname });
+        return data;
+    }catch(err){
+        alert(err.response?.data?.message || "알 수 없는 오류");
+
+        return {
+            success: false,
+            message: err.response?.data?.message || "오류 발생",
+            data: null
+        };
+    }
+}
