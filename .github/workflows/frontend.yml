@@ -35,7 +35,7 @@ jobs:
         with:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          aws-region: ${{ vars.AWS_REGION || 'ap-northeast-2' }} # 임시
+          aws-region: ${{ vars.AWS_REGION }}   
 
       # S3 배포 (정적 파일 동기화)
       - name: Deploy to S3
