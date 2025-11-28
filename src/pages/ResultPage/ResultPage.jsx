@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import './ResultPage.css';
-import { getResult } from '../api/result';
+import { getResult } from '../../api/result';
 
 function ResultPage({ nickname, onRetry }) {
   const [stats, setStats] = useState(null);
