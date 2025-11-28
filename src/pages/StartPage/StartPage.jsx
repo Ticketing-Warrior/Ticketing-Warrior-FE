@@ -2,8 +2,6 @@ import React, { useState, useEffect } from 'react';
 import './StartPage.css';
 import { insertQueue } from '../../api/queue';
 
-const VITE_SERVER_API_URL = import.meta.env.VITE_SERVER_API_URL; // 실제 서버 URL
-
 const StartPage = ({ onQueueEnter }) => {
   // 상태 정의
   const [nickname, setNickname] = useState('');
@@ -25,10 +23,9 @@ const StartPage = ({ onQueueEnter }) => {
       alert("닉네임을 입력해 주세요.");
       return;
     }
-    
     localStorage.setItem('nickname', trimmedNickname);
-    window.dispatchEvent(new Event('storage')); 
-    setIsNicknameSaved(true); 
+    window.dispatchEvent(new Event('storage'));
+    setIsNicknameSaved(true);
     alert(`닉네임 "${trimmedNickname}"이 저장되었습니다.`);
   };
 
@@ -39,18 +36,21 @@ const StartPage = ({ onQueueEnter }) => {
       alert("먼저 닉네임을 입력하고 저장해 주세요.");
       return;
     }
-
     setIsLoading(true);
-
     const data = await insertQueue(savedNickname);
-
     if (!data.success) {
       alert(data.message);
     } else {
       onQueueEnter(data.queuePosition); 
     }
+  };
 
- ;} 
+  // 닉네임 저장과 대기열 들어가는 것 동시에 하는 함수
+  const handleSaveEntry = async () => {
+    if (isLoading) return;
+    await handleNicknameSave();
+    await handleQueueEntry();
+  };
 
   return (
     <div className="start-page">
@@ -58,7 +58,7 @@ const StartPage = ({ onQueueEnter }) => {
         <h1 className="start-title">Ticketing Warrior</h1>
         <p className="start-subtitle">실전같은 티켓팅 예매 연습을 해보세요!</p>
         
-        {/* 닉네임 입력 및 저장 버튼 */}
+        {/* 닉네임 입력 */}
         <div className="nickname-input-group">
           <input
             type="text"
@@ -69,18 +69,11 @@ const StartPage = ({ onQueueEnter }) => {
             disabled={isLoading} 
             maxLength={20}
           />
-          <button
-            className="save-nickname-button"
-            onClick={handleNicknameSave}
-            disabled={!nickname.trim() || isLoading} 
-          >
-            입력
-          </button>
         </div>
-
+        {/* 닉네임 저장과 대기열 입장 동시에 */}
         <button
-          className="booking-button"
-          onClick={handleQueueEntry}
+          className="SaveEntry-button"
+          onClick={handleSaveEntry}
           disabled={isLoading || !isNicknameSaved} 
         >
           {isLoading ? '대기열 진입 중...' : '예매하기'}
