@@ -16,7 +16,7 @@ const StartPage = ({ onQueueEnter }) => {
     if (savedNickname) {
       setNickname(savedNickname);
     }
-  }, [nickname]);
+  }, []);
 
 
   // 대기열 진입 처리

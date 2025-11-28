@@ -1,14 +1,10 @@
 import { axiosInstance } from './axios';
 
 export const getMyPos = async (nickname) => {
-    try{
-        const { data } = await axiosInstance.get(`/api/queue/get-pos/${nickname}`);
-        return data;
-
-    }catch(err){
-        console.log(`순번 조회 오류: `,err);
-        throw err;
-    }
+  const { data } = await axiosInstance.get("/api/queue/get-pos", {
+    params: { nickname }
+  });
+  return data;
 }
 
 export const insertQueue = async (nickname) => {
@@ -19,16 +15,9 @@ export const insertQueue = async (nickname) => {
 };
 
 export const popQueue = async (nickname) => {
-    try {
-        const { data } = await axiosInstance.post("/api/queue/pop", { nickname });
-        return data;
-    }catch(err){
-        alert(err.response?.data?.message || "알 수 없는 오류");
+  const { data } = await axiosInstance.post("/api/queue/pop", {
+    nickname
+  });
+  return data;
+};
 
-        return {
-            success: false,
-            message: err.response?.data?.message || "오류 발생",
-            data: null
-        };
-    }
-}
