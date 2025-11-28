@@ -9,6 +9,8 @@ jobs:
   build_and_deploy:
     runs-on: ubuntu-latest
 
+    environment: AWS
+
     # 환경 변수 (job‑level)
     env:
       AWS_REGION: ${{ vars.AWS_REGION }}                
