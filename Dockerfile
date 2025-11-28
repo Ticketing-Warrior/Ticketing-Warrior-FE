@@ -1,17 +1,37 @@
-# 1. Build Stage
-FROM node:20-alpine as builder
+# 1️⃣ 베이스 이미지 (대문자 FROM)
+FROM node:20-alpine AS builder
 
-# 작업 디렉토리(Working Directory): 컨테이너 내부의 /app 폴더를 작업 공간으로 정의
+# 2️⃣ 작업 디렉터리 설정
 WORKDIR /app
 
-# 의존성 복사 방식: 프로젝트 메타 정보(package.json)를 먼저 복사 후, 의존성 설치
-COPY package.json package-lock.json ./
-RUN npm install
+# 3️⃣ package.json, package-lock.json 복사 → 의존성 설치
+COPY package*.json ./
+# (pnpm 사용 시: COPY pnpm-lock.yaml ./
+#  npm install (or pnpm install / yarn install)
+RUN npm ci   # production‑only 의존성만 설치 
 
+# 4️⃣ 소스 전체 복사
+COPY . .
 
-#  빌드 명령어 실행 -> /app/dist 폴더 생성
-RUN npm run build 
+# 5️⃣ 빌드 실행
+RUN npm run build   # Vite가 /dist (또는 /build) 폴더에 정적 파일을 만든다
 
+# ------------------------------------------------------------
+# 6️⃣ 실제 배포용 이미지 (nginx 로 정적 파일 제공)
+# ------------------------------------------------------------
+FROM nginx:stable-alpine AS runtime
 
-# 최종 이미지가 아닌, CI/CD 파이프라인에서 이 'builder' 스테이지로 접근하여
-# /app/dist 폴더의 내용을 S3로 복사.
+# nginx 기본 설정 파일을 그대로 사용 (필요 시 커스텀 설정을 복사)
+# COPY nginx.conf /etc/nginx/conf.d/default.conf   # (선택)
+
+# 빌드 단계에서 만든 정적 파일을 nginx html 폴더에 복사
+COPY --from=builder /app/dist /usr/share/nginx/html
+
+# (선택) 캐시 무효화를 위해 헤더 설정
+# RUN echo "add_header Cache-Control \"public, max-age=0, must-revalidate\";" >> /etc/nginx/conf.d/default.conf
+
+# 컨테이너 실행 포트 (nginx 기본 80)
+EXPOSE 80
+
+# 기본 명령
+CMD ["nginx", "-g", "daemon off;"]
