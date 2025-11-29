@@ -136,7 +136,8 @@ function SeatMapPage({ onBookingSuccess }) {
       onBookingSuccess({
         seatId: selectedSeat.id,
         nickname,
-        reservedAt: new Date().toISOString(),
+        duration: data.data.duration,
+        rankingP: data.data.rankingPercent
       });
     
 

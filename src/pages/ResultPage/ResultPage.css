@@ -29,18 +29,10 @@
   }
 }
 
+/* 성공 헤더 */
 .success-badge {
   text-align: center;
   margin-bottom: 40px;
-}
-
-@keyframes bounce {
-  0%, 100% {
-    transform: translateY(0);
-  }
-  50% {
-    transform: translateY(-10px);
-  }
 }
 
 .success-badge h1 {
@@ -50,11 +42,30 @@
   font-weight: 700;
 }
 
-.success-badge p {
-  color: #6b7280;
-  font-size: 1rem;
+/* 좌석/닉네임 정보 박스 추가 */
+.seat-info-box {
+  background: linear-gradient(135deg, #e8defc 0%, #ddd1ff 100%);
+  padding: 20px;
+  border-radius: 20px;
+  border: 2px solid #b39afb;
+  margin-bottom: 30px;
+  text-align: center;
 }
 
+.seat-info-box h2 {
+  font-size: 1.4rem;
+  color: #4b247d;
+  font-weight: 700;
+  margin: 0 0 5px 0;
+}
+
+.seat-info-box p {
+  font-size: 0.95rem;
+  color: #5a4a7c;
+  margin: 0;
+}
+
+/* 결과 카드 목록 */
 .result-details {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -65,11 +76,12 @@
 .result-card {
   display: flex;
   align-items: center;
-  gap: 10px;
-  padding: 30px 25px;
+  gap: 20px;
+  padding: 25px 20px;
   border-radius: 20px;
   border: 2px solid #7c37d0;
   transition: all 0.3s ease;
+  min-height: 130px;
 }
 
 .result-card:hover {
@@ -77,124 +89,63 @@
   box-shadow: 0 8px 20px rgba(228, 164, 255, 0.3);
 }
 
-.time-card {
-  background: linear-gradient(135deg, #f3e8ff 0%, #e9d5ff 100%);
-  border-color: #a78bfa;
-}
-
+.time-card,
 .performance-card {
   background: linear-gradient(135deg, #f3e8ff 0%, #e9d5ff 100%);
   border-color: #a78bfa;
 }
 
 .card-icon {
-  font-size: 2rem;
+  font-size: 2.5rem;
   min-width: 50px;
   text-align: center;
 }
 
-.card-content1 {
-  flex: 1;
-  margin-left: 65px;
-}
-
+.card-content1,
 .card-content2 {
   flex: 1;
-  margin-left: 10px;
 }
 
-.card-label1 {
-  font-size: 0.9rem;
-  color: #6b7280;
-  margin-bottom: 5px;
-  margin-left: 10px;
-  font-weight: 500;
-}
+/* 라벨 */
+.card-label1,
 .card-label2 {
   font-size: 0.9rem;
   color: #6b7280;
   margin-bottom: 5px;
-  margin-left: 20px;
-  font-weight: 500;
+  font-weight: 800;
 }
 
+/* 값 */
 .card-value {
   font-size: 1.8rem;
   font-weight: 700;
   color: #1f2937;
 }
 
-.result-info {
-  margin-bottom: 30px;
-}
-
-.info-box {
-  background: linear-gradient(135deg, #dbeafe 0%, #bfdbfe 100%);
-  padding: 25px;
-  border-radius: 20px;
-  border: 2px solid #93c5fd;
-}
-
-.info-box h3 {
-  color: #1e40af;
-  font-size: 1.2rem;
-  margin-bottom: 15px;
-  font-weight: 700;
-}
-
-.info-box ul {
-  list-style: none;
-  padding: 0;
-  margin: 0;
-}
-
-.info-box li {
-  color: #1e3a8a;
-  padding: 8px 0;
-  padding-left: 25px;
-  position: relative;
-  font-size: 0.95rem;
-}
-
-.info-box li::before {
-  content: '✓';
-  position: absolute;
-  left: 0;
-  color: #3b82f6;
-  font-weight: 700;
-}
-
+/* 재도전 버튼 */
 .result-actions {
   display: flex;
   gap: 15px;
   margin-bottom: 25px;
 }
 
-.retry-button,
-.confirm-button {
+.retry-button {
   flex: 1;
   padding: 18px;
   font-size: 1.1rem;
   font-weight: 700;
+  background: #7c37d0;
+  color: white;
   border: none;
   border-radius: 15px;
   cursor: pointer;
-  transition: all 0.3s ease;
-}
-
-.retry-button {
-  background: #7c37d0;
-  color: white;
   box-shadow: 0 4px 15px rgba(136, 100, 255, 0.3);
+  transition: all 0.3s ease;
 }
 
 .retry-button:hover {
   transform: translateY(-2px);
   box-shadow: 0 6px 20px rgba(136, 100, 255, 0.3);
-}
-
-.retry-button:active {
-  transform: translateY(0);
 }
 
 .result-footer {
@@ -208,6 +159,7 @@
   font-size: 0.9rem;
 }
 
+/* 모바일 */
 @media (max-width: 600px) {
   .result-container {
     padding: 40px 25px;
@@ -217,11 +169,12 @@
     font-size: 1.8rem;
   }
 
-  .success-icon {
-    font-size: 3rem;
+  .result-details {
+    grid-template-rows: 1fr;
   }
 
   .result-card {
+    flex-direction: row;
     padding: 20px;
   }
 
@@ -231,5 +184,9 @@
 
   .result-actions {
     flex-direction: column;
+  }
+
+  .seat-info-box h2 {
+    font-size: 1.2rem;
   }
 }
