@@ -11,6 +11,8 @@ import NicknameDisplay from './components/NicknameDisplay';
 const App = () => {
   const [currentPage, setCurrentPage] = useState('start');
   const [queueData, setQueueData] = useState(null);
+  const [bookingResult, setBookingResult] = useState(null);
+
 
   return (
     <>
@@ -39,12 +41,17 @@ const App = () => {
       
       {currentPage === 'seats' && (
         <SeatMapPage 
-          onBookingSuccess={() => setCurrentPage('result')} 
-        />
+          onBookingSuccess={(result) => {
+            setBookingResult(result);
+            setCurrentPage('result');
+          }}
+      />
+
       )}
       
       {currentPage === 'result' && (
-        <ResultPage 
+        <ResultPage
+          data={bookingResult}
           onRetry={() => setCurrentPage('cooldown')}
           onConfirm={() => setCurrentPage('start')}
         />

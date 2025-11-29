@@ -11,3 +11,12 @@ export const getASeat = async (seatId) => {
     });
     return data;
 }
+
+export const reserveSeat = async (nickname, seatId) => {
+  const { data } = await axiosInstance.post("/api/record/confirm", {
+    nickname,
+    seatId
+  });
+
+  return data;
+}

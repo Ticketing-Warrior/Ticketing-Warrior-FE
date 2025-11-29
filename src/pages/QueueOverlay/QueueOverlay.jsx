@@ -27,15 +27,16 @@ const QueueOverlay = ({ initialQueue, onComplete }) => {
           alert(data.message); 
           return;
         }
+
       } catch (error) {
         console.error('대기열 조회 오류:', error);
         return; 
       }
 
-      const currentPosition = data.curPos ?? 0;
+      const currentPosition = data.data.curPos ?? 1;
       setQueueNumber(currentPosition);
 
-      if (currentPosition === 0) {
+      if (currentPosition === 1) {
         clearInterval(intervalId);
 
         try {
