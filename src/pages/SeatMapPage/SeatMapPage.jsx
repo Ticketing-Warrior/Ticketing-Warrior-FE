@@ -93,9 +93,9 @@ const formatSeats = (seatData) => {
 
     try {
       const data = await getASeat(seat.id);
+
       if (!data.success) {
         alert(data.message);
-        return;
       }
 
       setSeats(prev =>
@@ -110,14 +110,13 @@ const formatSeats = (seatData) => {
         )
       );
     } catch (err) {
-      console.error("좌석 선택 실패:", err);
-      refreshSeats();
+      console.log("좌석 선택 실패:", err);
     }
   };
 
-  const isInteractionDisabled = isReserving || isApiLoading || apiError;
+  // const handleReservation = async 
 
-  const getSeatLabel = (row, col) => `${String.fromCharCode(row+65)}${col + 1}`;
+  const isInteractionDisabled = isReserving || isApiLoading || apiError;
 
   return (
     <div className="seatmap-page">
@@ -143,7 +142,7 @@ const formatSeats = (seatData) => {
           <div className="seat-legend">
             <div className="legend-item"><div className="legend-color available"></div>선택 가능</div>
             <div className="legend-item"><div className="legend-color selected"></div>선택됨</div>
-            <div className="legend-item"><div className="legend-color occupied"></div>선점됨</div>
+            <div className="legend-item"><div className="legend-color occupied"></div>판매됨</div>
           </div>
         </div>
 
@@ -159,22 +158,30 @@ const formatSeats = (seatData) => {
               key={seat.id}
               className={`seat ${seat.status}`}
               onClick={(e) => handleSeatClick(seat, e)}
-              title={getSeatLabel(seat.row, seat.col)}
+              title={seat.id}
             >
-              {getSeatLabel(seat.row, seat.col)}
+             {seat.id}
             </div>
           ))}
         </div>
 
-        {/* 선택 좌석 정보 */}
+        {/* 예매 패널 */}
         {selectedSeat && (
           <div className="reservation-panel">
             <div className="selected-info">
               <span className="info-label">선택한 좌석:</span>
               <span className="info-value">
-                {getSeatLabel(selectedSeat.row, selectedSeat.col)}
+                {selectedSeat.id}
               </span>
             </div>
+
+            <button
+              className={`reserve-btn ${isReserving ? "loading" : ""}`}
+              //onClick={handleReservation}
+              disabled={isInteractionDisabled}
+            >
+              {isReserving ? "예매 중..." : "좌석 예매하기"}
+            </button>
           </div>
         )}
       </div>

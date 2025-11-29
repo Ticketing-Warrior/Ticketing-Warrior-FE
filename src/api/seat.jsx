@@ -7,7 +7,7 @@ export const getAllSeats = async () => {
 
 export const getASeat = async (seatId) => {
     const { data } = await axiosInstance.get("/api/seat/single", {
-        seatId
+        params: {seatId}
     });
     return data;
 }
