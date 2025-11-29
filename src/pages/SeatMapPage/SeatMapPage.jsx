@@ -1,8 +1,10 @@
 import { useState, useEffect } from 'react';
 import './SeatMapPage.css';
-import { getAllSeats, getASeat } from '../../api/seat';
+import { getAllSeats, getASeat, reserveSeat } from '../../api/seat';
+import { nicknameAtom } from '../../store/nicknameAtom';
+import { useAtomValue } from 'jotai';
 
-function SeatMapPage({ onBookingSuccess, nickname = "user1234" }) {
+function SeatMapPage({ onBookingSuccess }) {
 
   const [selectedSeat, setSelectedSeat] = useState(null);
   const [isReserving, setIsReserving] = useState(false);
@@ -10,33 +12,33 @@ function SeatMapPage({ onBookingSuccess, nickname = "user1234" }) {
   const [isApiLoading, setIsApiLoading] = useState(true);
   const [apiError, setApiError] = useState(null);
   const [seats, setSeats] = useState([]);
+  const nickname = useAtomValue(nicknameAtom);
 
-const formatSeats = (seatData) => {
-  const seatIds = Object.keys(seatData).sort();
-  const grid = [];
-  let rowArr = [];
+  const formatSeats = (seatData) => {
+    const seatIds = Object.keys(seatData).sort();
+    const grid = [];
+    let rowArr = [];
 
-  seatIds.forEach((seatId, index) => {
-    const row = Math.floor(index / 10); 
-    const col = index % 10;            
+    seatIds.forEach((seatId, index) => {
+      const row = Math.floor(index / 10);
+      const col = index % 10;
 
-    rowArr.push({
-      id: seatId,
-      status: seatData[seatId],
-      row: row,
-      col: col,
+      rowArr.push({
+        id: seatId,
+        status: seatData[seatId],
+        row,
+        col,
+      });
+
+      if ((index + 1) % 10 === 0) {
+        grid.push(rowArr);
+        rowArr = [];
+      }
     });
 
-    if ((index + 1) % 10 === 0) {
-      grid.push(rowArr);
-      rowArr = [];
-    }
-  });
-
-  if (rowArr.length) grid.push(rowArr);
-
-  return grid;
-};
+    if (rowArr.length) grid.push(rowArr);
+    return grid;
+  };
 
   const refreshSeats = async () => {
     try {
@@ -114,7 +116,36 @@ const formatSeats = (seatData) => {
     }
   };
 
-  // const handleReservation = async 
+  const handleReservation = async () => {
+    if (!selectedSeat) return;
+
+    try {
+      setIsReserving(true);
+      
+      console.log(nickname)
+      const data = await reserveSeat(nickname, selectedSeat.id);
+
+      if (!data.success) {
+        alert(data.message);
+        setIsReserving(false);
+        return;
+      }
+
+      alert("예매 성공 !");
+
+      onBookingSuccess({
+        seatId: selectedSeat.id,
+        nickname,
+        reservedAt: new Date().toISOString(),
+      });
+    
+
+    } catch (err) {
+      console.log("좌석 예매 실패:", err);
+    } finally {
+      setIsReserving(false);
+    }
+  };
 
   const isInteractionDisabled = isReserving || isApiLoading || apiError;
 
@@ -125,11 +156,9 @@ const formatSeats = (seatData) => {
           <h1>좌석 선택</h1>
         </div>
 
-        {/* 상태 메시지 */}
         {isApiLoading && <div className="status-message loading">티켓팅 시스템 접속 중...</div>}
         {apiError && <div className="status-message error">⚠️ 오류: {apiError}</div>}
 
-        {/* 컨트롤 패널 */}
         <div className="seatmap-controls">
           <button
             className="refresh-btn"
@@ -146,12 +175,10 @@ const formatSeats = (seatData) => {
           </div>
         </div>
 
-        {/* 무대 */}
         <div className="stage">
           <div className="stage-label">STAGE</div>
         </div>
 
-        {/* 좌석 그리드 */}
         <div className="seats-grid">
           {seats.flat().map(seat => (
             <div
@@ -160,24 +187,21 @@ const formatSeats = (seatData) => {
               onClick={(e) => handleSeatClick(seat, e)}
               title={seat.id}
             >
-             {seat.id}
+              {seat.id}
             </div>
           ))}
         </div>
 
-        {/* 예매 패널 */}
         {selectedSeat && (
           <div className="reservation-panel">
             <div className="selected-info">
               <span className="info-label">선택한 좌석:</span>
-              <span className="info-value">
-                {selectedSeat.id}
-              </span>
+              <span className="info-value">{selectedSeat.id}</span>
             </div>
 
             <button
               className={`reserve-btn ${isReserving ? "loading" : ""}`}
-              //onClick={handleReservation}
+              onClick={handleReservation}
               disabled={isInteractionDisabled}
             >
               {isReserving ? "예매 중..." : "좌석 예매하기"}
