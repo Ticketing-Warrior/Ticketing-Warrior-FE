@@ -1,52 +1,66 @@
 import React, { useEffect, useState } from 'react';
 import './QueueOverlay.css';
-import { getMyPos, insertQueue } from '../../api/queue';
+import { getMyPos, popQueue } from '../../api/queue';
 
-const POLL_INTERVAL = 500; // 0.5초마다 폴링
+const POLL_INTERVAL = 500;
 
 const QueueOverlay = ({ initialQueue, onComplete }) => {
-  const [queueNumber, setQueueNumber] = useState(initialQueue || 50);
+  const [queueNumber, setQueueNumber] = useState(initialQueue ?? 0);
 
   useEffect(() => {
-    let interval;
-    const startRealMode = async () => {
-      const nickname = sessionStorage.getItem('nickname');
+    const nickname = localStorage.getItem('nickname');
 
-      if (!nickname) {
-        console.error('닉네임이 없어 대기열 진입(insertQueue)을 할 수 없습니다');
-        return;
-      }
+    if (!nickname) {
+      alert('닉네임이 존재하지 않습니다. 예매 후 다시 진행해주세요.');
+      return;
+    }
 
-      // 1. 대기열 진입
+    let intervalId;
+
+    const pollQueue = async () => {
+      let data;
+
       try {
-        // console.log(`[Queue] insertQueue 실행`);
-        await insertQueue(nickname);
-        // console.log('[Queue] insertQueue 성공. 폴링 시작.');
-      } catch (err) {
-        console.error('[Queue] insertQueue 실패:', err);
-        return;
+        data = await getMyPos(nickname);
+
+        if (!data.success) {
+          alert(data.message); 
+          return;
+        }
+
+      } catch (error) {
+        console.error('대기열 조회 오류:', error);
+        return; 
       }
 
-      // 2. 대기열 순번 조회
-      const pollQueue = async () => {
+      const currentPosition = data.data.curPos ?? 1;
+      setQueueNumber(currentPosition);
+
+      if (currentPosition === 1) {
+        clearInterval(intervalId);
+
         try {
-          const data = await getMyPos(nickname);
-          const currentPosition = data.currentPosition || 0;
-          setQueueNumber(currentPosition);
-          if (currentPosition === 0) {
-            clearInterval(interval);
-            setTimeout(() => onComplete(), 500);
+          const data = await popQueue(nickname); 
+          if (!data.success) {
+            alert(data.message); 
+            return;
           }
+
+          setTimeout(() => {
+            onComplete();
+          }, 500);
         } catch (error) {
-          console.error('대기열 조회 오류:', error);
+          console.error('popQueue 오류:', error);
+          alert('대기열에서 빠지는 과정에서 오류가 발생했습니다. 자동으로 다시 시도합니다.');
+          intervalId = setInterval(pollQueue, POLL_INTERVAL);
         }
-      };
-      interval = setInterval(pollQueue, POLL_INTERVAL);
+      }
     };
 
-    startRealMode();
+    intervalId = setInterval(pollQueue, POLL_INTERVAL);
+    pollQueue(); 
 
-    return () => clearInterval(interval);
+    return () => clearInterval(intervalId);
   }, [onComplete]);
 
   return (
