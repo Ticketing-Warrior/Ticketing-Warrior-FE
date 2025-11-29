@@ -1,8 +1,6 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import './StartPage.css';
 import { insertQueue } from '../../api/queue';
-
-const VITE_SERVER_API_URL = import.meta.env.VITE_SERVER_API_URL; // 실제 서버 URL
 
 const StartPage = ({ onQueueEnter }) => {
   // 상태 정의
@@ -10,7 +8,6 @@ const StartPage = ({ onQueueEnter }) => {
   const [isLoading, setIsLoading] = useState(false);
   const [isNicknameSaved, setIsNicknameSaved] = useState(!!localStorage.getItem('nickname')); 
 
-  // 컴포넌트 마운트 시 localStorage에서 닉네임 불러오기
   useEffect(() => {
     const savedNickname = localStorage.getItem('nickname');
     if (savedNickname) {
@@ -19,7 +16,6 @@ const StartPage = ({ onQueueEnter }) => {
   }, []);
 
 
-  // 대기열 진입 처리
   const handleQueueEntry = async () => {
     const trimmedNickname = nickname.trim();
     if (!trimmedNickname) {

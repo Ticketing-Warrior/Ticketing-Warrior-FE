@@ -39,7 +39,11 @@ const QueueOverlay = ({ initialQueue, onComplete }) => {
         clearInterval(intervalId);
 
         try {
-          await popQueue(nickname); 
+          const data = await popQueue(nickname); 
+          if (!data.success) {
+            alert(data.message); 
+            return;
+          }
 
           setTimeout(() => {
             onComplete();
