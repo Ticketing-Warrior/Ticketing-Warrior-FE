@@ -158,7 +158,7 @@ function SeatMapPage({ onBookingSuccess }) {
         </div>
 
         {isApiLoading && <div className="status-message loading">티켓팅 시스템 접속 중...</div>}
-        {apiError && <div className="status-message error">⚠️ 오류: {apiError}</div>}
+        {apiError && <div className="status-message error">오류: {apiError}</div>}
 
         <div className="seatmap-controls">
           <button
@@ -166,7 +166,7 @@ function SeatMapPage({ onBookingSuccess }) {
             onClick={refreshSeats}
             disabled={isInteractionDisabled}
           >
-            🔄 새로고침
+            새로고침
           </button>
 
           <div className="seat-legend">
