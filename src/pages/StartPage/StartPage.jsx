@@ -8,29 +8,23 @@ import logo from '../../assets/tw-logo.jpg';
 const StartPage = ({ onQueueEnter }) => {
   const [nickname, setNickname] = useAtom(nicknameAtom);
   const [isLoading, setIsLoading] = useState(false);
-
-  const [firstZeroPassed, setFirstZeroPassed] = useState(false); // 첫 0초가 지나갔는지 확인 용도
   const [timeLeft, setTimeLeft] = useState(0);
 
   useEffect(() => {
     const update = () => {
       const sec = new Date().getSeconds();
-
-      // 남은 초수 갱신
-      setTimeLeft(60 - sec-1);
-
-      // 첫 0초를 만나면 플래그 true
-      if (sec === 0 && !firstZeroPassed) {
-        setFirstZeroPassed(true);
-      }
+      
+      // 60초 카운트다운 (59 -> 0)
+      setTimeLeft(sec === 0 ? 0 : 60 - sec);
     };
 
     update();
     const interval = setInterval(update, 1000);
     return () => clearInterval(interval);
-  }, [firstZeroPassed]);
+  }, []);
 
-  const isButtonActive = firstZeroPassed; // 버튼 활성화 조건 : 첫 0초가 안 지났을 때
+  // 45~60초(즉, 0초가 되고 15초간만)일 때만 버튼 활성화
+  const isButtonActive = timeLeft >= 45 || timeLeft === 0;
 
   const handleQueueEntry = async () => {
     const trimmedNickname = nickname.trim();
@@ -41,7 +35,7 @@ const StartPage = ({ onQueueEnter }) => {
     }
 
     if (!isButtonActive) {
-      alert("예매는 페이지 입장 후 첫 0초가 지난 뒤에 가능합니다!");
+      alert("예매는 매 분 0~15초 사이에만 가능합니다!");
       return;
     }
 
@@ -66,11 +60,27 @@ const StartPage = ({ onQueueEnter }) => {
   return (
     <div className="start-page">
       <div className="start-container">
+        {/* 로고 & 타이틀 */}
         <div className="logo-title-wrapper">
           <img src={logo} alt="Ticketing Warrior Logo" className="logo-image" />
           <h1 className="start-title">Ticketing Warrior</h1>
         </div>        
-        <p className="start-subtitle">실전같은 티켓팅 예매 연습을 해보세요!</p>
+        <p className="start-subtitle">
+          실전같은 티켓팅 예매 연습을 해보세요!<br />
+          <span className="timer-info">0초가 되고 15초 동안만 예매가 가능합니다.</span>
+        </p>
+        
+        {/* 타이머 디스플레이 - 항상 표시 */}
+        <div className="timer-display">
+          <div className="timer-label">
+            {isButtonActive ? '예매 가능' : '예매 대기 중'}
+          </div>
+          <div className={`timer-circle ${isButtonActive ? 'timer-active' : ''}`}>
+            <div className="timer-number">{timeLeft}</div>
+          </div>
+        </div>
+        
+        {/* 닉네임 입력 */}
         <div className="nickname-input-group">
           <input
             type="text"
@@ -83,6 +93,7 @@ const StartPage = ({ onQueueEnter }) => {
           />
         </div>
 
+        {/* 예매하기 버튼 */}
         <button
           className={`booking-button ${isButtonActive ? 'active' : 'disabled'}`}
           onClick={handleQueueEntry}
@@ -92,7 +103,7 @@ const StartPage = ({ onQueueEnter }) => {
             ? "대기열 진입 중..."
             : isButtonActive
             ? "예매하기"
-            : `0초까지 ${timeLeft}초`}
+            : `${timeLeft}초 후 예매 가능`}
         </button>
       </div>
     </div>
