@@ -22,4 +22,3 @@ export const popQueue = async (nickname) => {
   });
   return data;
 };
-
