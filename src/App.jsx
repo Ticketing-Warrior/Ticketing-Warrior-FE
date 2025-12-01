@@ -4,7 +4,7 @@ import QueueOverlay from './pages/QueueOverlay/QueueOverlay';
 import CaptchaPage from './pages/CaptchaPage/CaptchaPage';
 import SeatMapPage from './pages/SeatMapPage/SeatMapPage';
 import ResultPage from './pages/ResultPage/ResultPage';
-import CooldownPage from './pages/CooldownPage/CooldownPage';
+// import CooldownPage from './pages/CooldownPage/CooldownPage';
 import './App.css';
 import NicknameDisplay from './components/NicknameDisplay';
 
@@ -52,16 +52,15 @@ const App = () => {
       {currentPage === 'result' && (
         <ResultPage
           data={bookingResult}
-          onRetry={() => setCurrentPage('cooldown')}
-          onConfirm={() => setCurrentPage('start')}
+          onRetry={() => setCurrentPage('start')}
         />
       )}
       
-      {currentPage === 'cooldown' && (
+      {/* {currentPage === 'cooldown' && (
         <CooldownPage 
           onComplete={() => setCurrentPage('start')} 
         />
-      )}
+      )} */}
     </>
   );
 };
