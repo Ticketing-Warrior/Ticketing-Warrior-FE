@@ -23,6 +23,17 @@ const StartPage = ({ onQueueEnter }) => {
     return () => clearInterval(interval);
   }, []);
 
+  const formatCurrentTime = () => {
+    const now = new Date();
+    const month = String(now.getMonth() + 1).padStart(2, '0');
+    const date = String(now.getDate()).padStart(2, '0');
+    const hours = String(now.getHours()).padStart(2, '0');
+    const minutes = String(now.getMinutes()).padStart(2, '0');
+    const seconds = String(now.getSeconds()).padStart(2, '0');
+    
+    return `${month}월 ${date}일 ${hours}시 ${minutes}분 ${seconds}초`;
+  };
+
   // 45~60초(즉, 0초가 되고 15초간만)일 때만 버튼 활성화
   const isButtonActive = timeLeft >= 45 || timeLeft === 0;
 
@@ -67,16 +78,16 @@ const StartPage = ({ onQueueEnter }) => {
         </div>        
         <p className="start-subtitle">
           실전같은 티켓팅 예매 연습을 해보세요!<br />
-          <span className="timer-info">0초가 되고 15초 동안만 예매가 가능합니다.</span>
         </p>
         
         {/* 타이머 디스플레이 - 항상 표시 */}
         <div className="timer-display">
+          <span className="timer-info">매 분 00초부터 15초 동안 예매가 가능합니다.</span>
           <div className="timer-label">
-            {isButtonActive ? '예매 가능' : '예매 대기 중'}
+            {isButtonActive ? '예매 가능 클릭하세요!!' : '예매 대기 중..'}
           </div>
-          <div className={`timer-circle ${isButtonActive ? 'timer-active' : ''}`}>
-            <div className="timer-number">{timeLeft}</div>
+          <div className="current-time-display">
+            {formatCurrentTime()}
           </div>
         </div>
         
