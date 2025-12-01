@@ -3,6 +3,7 @@ import './StartPage.css';
 import { insertQueue } from '../../api/queue';
 import { nicknameAtom } from '../../store/nicknameAtom';
 import { useAtom } from 'jotai';
+import logo from '../../assets/tw-logo.jpg';
 
 const StartPage = ({ onQueueEnter }) => {
   const [nickname, setNickname] = useAtom(nicknameAtom);
@@ -65,9 +66,11 @@ const StartPage = ({ onQueueEnter }) => {
   return (
     <div className="start-page">
       <div className="start-container">
-        <h1 className="start-title">Ticketing Warrior</h1>
+        <div className="logo-title-wrapper">
+          <img src={logo} alt="Ticketing Warrior Logo" className="logo-image" />
+          <h1 className="start-title">Ticketing Warrior</h1>
+        </div>        
         <p className="start-subtitle">실전같은 티켓팅 예매 연습을 해보세요!</p>
-
         <div className="nickname-input-group">
           <input
             type="text"
