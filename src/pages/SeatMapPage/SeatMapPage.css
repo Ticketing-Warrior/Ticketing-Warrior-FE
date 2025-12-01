@@ -4,7 +4,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  background: #7c37d0;
+  background: linear-gradient(135deg, #c93756 0%, #9b2847 100%);
   padding: 10px;
 }
 
@@ -14,8 +14,9 @@
   padding: 25px 15px;
   max-width: 600px;
   width: 100%;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1); 
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
   animation: fadeInUp 0.5s ease;
+  border: 3px solid #c93756;
 }
 
 @keyframes fadeInUp {
@@ -35,7 +36,7 @@
 
 .seatmap-header h1 {
   font-size: 1.4rem;
-  color: #7c37d0;
+  color: #b83a52;
   margin-bottom: 5px;
   font-weight: 700;
 }
@@ -57,7 +58,7 @@
 
 .refresh-btn {
   padding: 8px 16px;
-  background: linear-gradient(135deg, #60a5fa 0%, #93c5fd 100%);
+  background: linear-gradient(135deg, #c93756 0%, #a83248 100%);
   color: white;
   border: none;
   border-radius: 8px;
@@ -65,12 +66,13 @@
   font-weight: 600;
   cursor: pointer;
   transition: all 0.3s ease;
-  box-shadow: 0 3px 8px rgba(96, 165, 250, 0.3);
+  box-shadow: 0 3px 8px rgba(201, 55, 86, 0.3);
 }
 
 .refresh-btn:hover:not(:disabled) {
   transform: translateY(-1px);
-  box-shadow: 0 4px 10px rgba(96, 165, 250, 0.4);
+  box-shadow: 0 4px 10px rgba(201, 55, 86, 0.4);
+  background: linear-gradient(135deg, #d94d68 0%, #c93756 100%);
 }
 
 .refresh-btn:disabled {
@@ -100,13 +102,13 @@
 }
 
 .legend-color.available {
-  background: #7c37d0;
-  border-color: #7c37d0;
+  background: #c93756;
+  border-color: #c93756;
 }
 
 .legend-color.selected {
-  background: #d7b5f4;
-  border-color: #7c37d0;
+  background: #f5a5b8;
+  border-color: #c93756;
 }
 
 .legend-color.occupied {
@@ -120,14 +122,14 @@
 }
 
 .stage-label {
-  background: #7c37d0;
+  background: #c93756;
   color: white;
   padding: 2px;
   text-align: center;
   font-size: 0.75rem;
   font-weight: 400;
-  border-radius: 5px; 
-  box-shadow: 0 3px 10px rgba(136, 100, 255, 0.3); 
+  border-radius: 5px;
+  box-shadow: 0 3px 10px rgba(201, 55, 86, 0.3);
 }
 
 .seats-grid {
@@ -137,13 +139,13 @@
   margin: 0 auto;
   max-width: 300px;
   padding: 15px;
-  background: rgba(244, 221, 255, 0.5);
+  background: rgba(255, 240, 243, 0.5);
   border-radius: 5px;
 }
 
 .seat {
-  width: 100%;          /* grid 셀에 꽉 차도록 */
-  aspect-ratio: 1 / 1;  /* 정사각형 */
+  width: 100%;
+  aspect-ratio: 1 / 1;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -152,28 +154,28 @@
   font-weight: 400;
   cursor: pointer;
   transition: all 0.2s ease;
-  border: 1px solid transparent; 
+  border: 1px solid transparent;
   user-select: none;
 }
 
 .seat.available {
-  background: #7c37d0;
+  background: #c93756;
   color: #ffffff;
-  border-color: #7c37d0;
+  border-color: #c93756;
 }
 
 .seat.available:hover {
   transform: scale(1.05);
-  box-shadow: 0 3px 8px rgba(92, 24, 126, 0.3);
-  border-color: #7c37d0;
+  box-shadow: 0 3px 8px rgba(201, 55, 86, 0.3);
+  border-color: #b83a52;
 }
 
 .seat.selected {
-  background: #d7b5f4;
+  background: #f5a5b8;
   color: #ffffff;
-  border-color: #7c37d0;
+  border-color: #c93756;
   transform: scale(1.1);
-  box-shadow: 0 4px 10px rgba(153, 54, 203, 0.3);
+  box-shadow: 0 4px 10px rgba(201, 55, 86, 0.3);
   animation: pulse 1.5s ease-in-out infinite;
 }
 
@@ -199,7 +201,7 @@
   padding: 15px;
   background: #ffffff;
   border-radius: 15px;
-  border: 2px solid #f0d2ff;
+  border: 2px solid #f5d0d8;
   animation: slideInUp 0.3s ease;
 }
 
@@ -224,13 +226,13 @@
 }
 
 .info-label {
-  color: #7c37d0;
+  color: #b83a52;
   font-weight: 500;
   font-size: 1.2rem;
 }
 
 .info-value {
-  color: #7c37d0;
+  color: #c93756;
   font-weight: 500;
   font-size: 1.3rem;
 }
@@ -241,17 +243,18 @@
   font-size: 1rem;
   font-weight: 700;
   color: white;
-  background: #7c37d0;
+  background: linear-gradient(135deg, #c93756 0%, #a83248 100%);
   border: none;
   border-radius: 10px;
   cursor: pointer;
   transition: all 0.3s ease;
-  box-shadow: 0 3px 10px rgba(153, 54, 203, 0.3);
+  box-shadow: 0 3px 10px rgba(201, 55, 86, 0.3);
 }
 
 .reserve-btn:hover:not(:disabled) {
   transform: translateY(-1px);
-  box-shadow: 0 4px 12px rgba(153, 54, 203, 0.3); 
+  box-shadow: 0 4px 12px rgba(201, 55, 86, 0.3);
+  background: linear-gradient(135deg, #d94d68 0%, #c93756 100%);
 }
 
 .reserve-btn:active:not(:disabled) {
@@ -317,43 +320,4 @@
   .refresh-btn, .reserve-btn {
     font-size: 0.8rem;
   }
-}
-
-/* 목데이터 css */
-
-.mock-controls {
-    margin: 10px 0;
-    padding: 10px;
-    border: 1px solid #ddd;
-    border-radius: 5px;
-    background-color: #f9f9f9;
-    display: flex;
-    align-items: center;
-    gap: 10px;
-}
-
-.mock-controls button {
-    padding: 8px 15px;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    font-weight: bold;
-    transition: background-color 0.2s;
-}
-
-.mock-controls .success-toggle {
-    background-color: #e6ffed;
-    color: #1e8449;
-    border: 1px solid #1e8449;
-}
-
-.mock-controls .fail-toggle {
-    background-color: #ffe6e6;
-    color: #c0392b;
-    border: 1px solid #c0392b;
-}
-
-.mock-info {
-    font-size: 0.8em;
-    color: #666;
 }
