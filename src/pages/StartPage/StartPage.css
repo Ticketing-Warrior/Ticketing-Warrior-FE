@@ -1,6 +1,6 @@
 .start-page {
   min-height: 100vh;
-  background: linear-gradient(135deg, #c93756 0%, #9b2847 100%);
+  background: linear-gradient(135deg,#c93756 0%, #9b2847 100%);
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -72,16 +72,16 @@
   display: block;
   margin-bottom: 8px;
   font-size: 13px;
-  color: #c93756;
-  font-weight: 600;
+  color: #666;
+  font-weight: 500;
 }
 
 .current-time-display {
   font-size: 1.8rem;
   font-weight: bold;
-  color: #c93756;
+  color: #000000;
   letter-spacing: 0.05em;
-  text-shadow: 2px 2px 4px rgba(255, 69, 0, 0.3);
+  /* text-shadow: 2px 2px 4px rgba(255, 69, 0, 0.3); */
 }
 
 .timer-display {
