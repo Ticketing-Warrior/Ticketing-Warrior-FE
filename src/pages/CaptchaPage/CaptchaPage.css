@@ -4,7 +4,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  background: #7c37d0;
+  background: linear-gradient(135deg, #c93756 0%, #9b2847 100%);
   padding: 20px;
 }
 
@@ -16,6 +16,7 @@
   width: 100%;
   box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
   animation: fadeInUp 0.6s ease;
+  border: 3px solid #c93756;
 }
 
 @keyframes fadeInUp {
@@ -36,7 +37,7 @@
 
 .captcha-header h1 {
   font-size: 2rem;
-  color: #7c37d0;
+  color: #b83a52;
   margin-bottom: 10px;
   font-weight: 700;
 }
@@ -57,23 +58,23 @@
   align-items: center;
   justify-content: center;
   gap: 15px;
-  background: linear-gradient(135deg, #ffeef8 0%, #f3e5ff 100%);
+  background: linear-gradient(135deg, #fff0f3 0%, #ffe4e9 100%);
   padding: 30px;
   border-radius: 20px;
-  border: 3px dashed #7c37d0;
+  border: 3px dashed #c93756;
 }
 
 .captcha-text {
   font-size: 2.5rem;
   font-weight: 700;
-  color: #7c37d0;
+  color: #b83a52;
   letter-spacing: 5px;
   user-select: none;
 }
 
 .refresh-button {
   background: #fff;
-  border: 2px solid #7c37d0;
+  border: 2px solid #c93756;
   border-radius: 50%;
   margin-left: 15px;
   width: 45px;
@@ -84,12 +85,14 @@
   cursor: pointer;
   font-size: 1.3rem;
   transition: all 0.3s ease;
+  color: #c93756;
 }
 
 .refresh-button:hover {
-  background: #7c37d0;
+  background: white;
   transform: rotate(180deg);
-  border-color: #7c37d0;
+  border-color: #c93756;
+  color: white;
 }
 
 .refresh-button:active {
@@ -106,18 +109,18 @@
   width: 100%;
   padding: 18px 20px;
   font-size: 1.2rem;
-  border: 2px solid #e0d4ff;
+  border: 2px solid #f5d0d8;
   border-radius: 15px;
   outline: none;
   transition: all 0.3s ease;
   text-align: center;
   font-weight: 600;
-  color: #7c37d0;
+  color: #b83a52;
 }
 
 .captcha-input:focus {
-  border-color: #8b5cf6;
-  box-shadow: 0 0 0 4px rgba(139, 92, 246, 0.1);
+  border-color: #c93756;
+  box-shadow: 0 0 0 4px rgba(201, 55, 86, 0.1);
 }
 
 .captcha-input:disabled {
@@ -148,17 +151,18 @@
   font-size: 1.1rem;
   font-weight: 700;
   color: #fff;
-  background: #7c37d0;
+  background: linear-gradient(135deg, #c93756 0%, #a83248 100%);
   border: none;
   border-radius: 15px;
   cursor: pointer;
   transition: all 0.3s ease;
-  box-shadow: 0 4px 15px rgba(139, 92, 246, 0.3);
+  box-shadow: 0 4px 15px rgba(201, 55, 86, 0.3);
 }
 
 .verify-button:hover:not(:disabled) {
   transform: translateY(-2px);
-  box-shadow: 0 6px 20px rgba(139, 92, 246, 0.4);
+  box-shadow: 0 6px 20px rgba(201, 55, 86, 0.4);
+  background: linear-gradient(135deg, #d94d68 0%, #c93756 100%);
 }
 
 .verify-button:active:not(:disabled) {
@@ -198,3 +202,13 @@
     font-size: 2rem;
   }
 }
+
+.refresh-icon {
+  width: 24px;
+  height: 24px;
+  transition: transform 0.3s ease;
+}
+
+/* .refresh-button:hover .refresh-icon {
+  transform: rotate(180deg);
+} */
