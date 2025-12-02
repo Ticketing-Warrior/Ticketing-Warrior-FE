@@ -25,7 +25,7 @@ FROM nginx:stable-alpine AS runtime
 # COPY nginx.conf /etc/nginx/conf.d/default.conf   # (선택)
 
 # 빌드 단계에서 만든 정적 파일을 nginx html 폴더에 복사
-COPY --from=builder /dist /usr/share/nginx/html
+COPY --from=builder /app/dist/. /usr/share/nginx/html
 
 # (선택) 캐시 무효화를 위해 헤더 설정
 # RUN echo "add_header Cache-Control \"public, max-age=0, must-revalidate\";" >> /etc/nginx/conf.d/default.conf
