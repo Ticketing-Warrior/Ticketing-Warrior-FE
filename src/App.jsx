@@ -4,13 +4,15 @@ import QueueOverlay from './pages/QueueOverlay/QueueOverlay';
 import CaptchaPage from './pages/CaptchaPage/CaptchaPage';
 import SeatMapPage from './pages/SeatMapPage/SeatMapPage';
 import ResultPage from './pages/ResultPage/ResultPage';
-import CooldownPage from './pages/CooldownPage/CooldownPage';
+// import CooldownPage from './pages/CooldownPage/CooldownPage';
 import './App.css';
 import NicknameDisplay from './components/NicknameDisplay';
 
 const App = () => {
   const [currentPage, setCurrentPage] = useState('start');
   const [queueData, setQueueData] = useState(null);
+  const [bookingResult, setBookingResult] = useState(null);
+
 
   return (
     <>
@@ -39,22 +41,26 @@ const App = () => {
       
       {currentPage === 'seats' && (
         <SeatMapPage 
-          onBookingSuccess={() => setCurrentPage('result')} 
-        />
+          onBookingSuccess={(result) => {
+            setBookingResult(result);
+            setCurrentPage('result');
+          }}
+      />
+
       )}
       
       {currentPage === 'result' && (
-        <ResultPage 
-          onRetry={() => setCurrentPage('cooldown')}
-          onConfirm={() => setCurrentPage('start')}
+        <ResultPage
+          data={bookingResult}
+          onRetry={() => setCurrentPage('start')}
         />
       )}
       
-      {currentPage === 'cooldown' && (
+      {/* {currentPage === 'cooldown' && (
         <CooldownPage 
           onComplete={() => setCurrentPage('start')} 
         />
-      )}
+      )} */}
     </>
   );
 };

@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import './CaptchaPage.css';
+import refreshIcon from '../../assets/refresh.png';
 
 // CAPTCHA 데이터 생성 함수
 const createCaptchaData = () => {
@@ -61,7 +62,7 @@ function CaptchaPage({ onVerifySuccess }) {
               onClick={generateCaptcha}
               title="새로운 문제"
             >
-              🔄
+              <img src={refreshIcon} alt="새로고침" className="refresh-icon" />
             </button>
           </div>
 

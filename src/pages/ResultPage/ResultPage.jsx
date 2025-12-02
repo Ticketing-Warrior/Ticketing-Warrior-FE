@@ -1,20 +1,14 @@
-import { useState } from 'react';
 import './ResultPage.css';
 
-// 통계 생성 함수
-const generateStats = () => {
-  const totalTime = (Math.random() * 10 + 2).toFixed(3); // 2~12초 사이
-  const percentile = Math.floor(Math.random() * 20) + 1; // 상위 1~20%
-  
-  return {
-    totalTime,
-    percentile,
-  };
-};
+function ResultPage({ data, onRetry }) {
 
-function ResultPage({ onRetry }) {
-  // reservationData는 나중에 API 연동 시 사용
-  const [stats] = useState(generateStats);
+  console.log(data);
+
+  const duration = data?.duration ?? 0;
+  const percentile = data?.rankingP ?? 100;
+
+  // 성능 분석 (percentile 기반)
+  const performance = getPerformance(percentile);
 
   return (
     <div className="result-page">
@@ -23,25 +17,27 @@ function ResultPage({ onRetry }) {
           <h1>예매 성공!</h1>
         </div>
 
+        <div className="seat-info-box">
+          <h2>선택한 좌석 : <strong>{data.seatId}</strong></h2>
+          <p>예매자 : {data.nickname}</p>
+        </div>
+
         <div className="result-details">
           <div className="result-card time-card">
             <div className="card-content1">
               <div className="card-label1">총 소요 시간</div>
-              <div className="card-value">{stats.totalTime}초</div>
+              <div className="card-value">{duration}초</div>
             </div>
           </div>
 
           <div className="result-card performance-card">
-            <div className="card-icon" style={{ fontSize: '2.5rem' }}>
-              {performance.emoji}
-            </div>
             <div className="card-content2">
               <div className="card-label2">속도 분석</div>
               <div 
                 className="card-value" 
                 style={{ color: performance.color }}
               >
-                상위 {stats.percentile}%
+                상위 {percentile}%
               </div>
             </div>
           </div>
@@ -65,3 +61,19 @@ function ResultPage({ onRetry }) {
 }
 
 export default ResultPage;
+
+
+
+function getPerformance(percentile) {
+  if (percentile <= 5) {
+    return { color: "#FF3B30", label: "초고수" };
+  } else if (percentile <= 10) {
+    return { color: "#FF9500", label: "고수" };
+  } else if (percentile <= 30) {
+    return { color: "#FFCC00", label: "상위권" };
+  } else if (percentile <= 60) {
+    return { color: "#34C759", label: "평균" };
+  } else {
+    return { color: "#5856D6", label: "연습 필요" };
+  }
+}
