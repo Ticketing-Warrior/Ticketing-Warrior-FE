@@ -20,14 +20,28 @@ jobs:
         uses: actions/checkout@v4
 
       # Docker Build & 정적 파일 추출
+      # - name: Docker Build and Extract Artifacts
+      #   id: build
+      #   run: |
+      #     # 이미지 빌드 (Dockerfile 안에서 npm install → npm run build 가 수행된다고 가정)
+      #     docker build -t frontend-builder .
+      #     # 컨테이너 실행 → /app/dist 를 호스트 /tmp/dist 로 복사
+      #     docker run --rm -v /tmp/dist:/dist frontend-builder \
+      #       sh -c 'cp -r /app/dist/. /dist'
+
+      # Docker Build & 정적 파일 추출 스텝
       - name: Docker Build and Extract Artifacts
         id: build
         run: |
-          # 이미지 빌드 (Dockerfile 안에서 npm install → npm run build 가 수행된다고 가정)
-          docker build -t frontend-builder .
-          # 컨테이너 실행 → /app/dist 를 호스트 /tmp/dist 로 복사
-          docker run --rm -v /tmp/dist:/dist frontend-builder \
-            sh -c 'cp -r /app/dist/. /dist'
+          # 1. 빌드 스테이지까지만 빌드하고 새로운 태그로 지정
+          # --target artifact 옵션을 사용해 Node.js 빌드 환경까지만 만듭니다.
+          docker build -t frontend-builder-artifact . --target artifact
+          # 2. 임시 컨테이너를 생성하여 파일을 추출할 준비
+          docker create --name build_extractor frontend-builder-artifact
+          # 3. 임시 컨테이너에서 호스트 /tmp/dist로 빌드 파일 복사
+          docker cp build_extractor:/app/dist/. /tmp/dist
+          # 4. 사용 후 임시 컨테이너 제거 (선택적)
+          docker rm build_extractor
 
       # AWS 인증 (IAM 권한)
       - name: Configure AWS Credentials
