@@ -1,12 +1,14 @@
 import { useState, useEffect } from 'react';
 import './SeatMapPage.css';
-import { getAllSeats, reserveSeat } from '../../api/seat';
+import { getAllSeats, getASeat, reserveSeat } from '../../api/seat';
 import { nicknameAtom } from '../../store/nicknameAtom';
 import { useAtomValue } from 'jotai';
 
 function SeatMapPage({ onBookingSuccess }) {
+
   const [selectedSeat, setSelectedSeat] = useState(null);
   const [isReserving, setIsReserving] = useState(false);
+  const [clickTime, setClickTime] = useState(null);
   const [isApiLoading, setIsApiLoading] = useState(true);
   const [apiError, setApiError] = useState(null);
   const [seats, setSeats] = useState([]);
@@ -38,14 +40,15 @@ function SeatMapPage({ onBookingSuccess }) {
     return grid;
   };
 
-  // 좌석 전체 새로고침
   const refreshSeats = async () => {
     try {
       const data = await getAllSeats();
+
       if (!data.success) {
         alert(data.message);
         return;
       }
+
       const seatGrid = formatSeats(data.data);
       setSeats(seatGrid);
       setSelectedSeat(null);
@@ -54,7 +57,6 @@ function SeatMapPage({ onBookingSuccess }) {
     }
   };
 
-  // 초기 좌석 로딩
   useEffect(() => {
     const startAndLoadSeats = async () => {
       try {
@@ -80,34 +82,7 @@ function SeatMapPage({ onBookingSuccess }) {
     startAndLoadSeats();
   }, [nickname]);
 
-  // 좌석 상태 폴링 (예매 전까지 지속)
-  useEffect(() => {
-    if (!nickname) return;
-
-    const intervalId = setInterval(async () => {
-      try {
-        const data = await getAllSeats();
-        if (!data.success) return;
-
-        const seatGrid = formatSeats(data.data);
-
-        setSeats(prev =>
-          seatGrid.map(row =>
-            row.map(seat =>
-              seat.id === selectedSeat?.id ? { ...seat, status: 'selected' } : seat
-            )
-          )
-        );
-      } catch (err) {
-        console.error("좌석 상태 폴링 실패:", err);
-      }
-    }, 500); // 0.5초마다 갱신
-
-    return () => clearInterval(intervalId);
-  }, [nickname, selectedSeat]);
-
-  // 좌석 클릭
- const handleSeatClick = async (seat, event) => {
+  const handleSeatClick = async (seat, event) => {
     if (seat.status !== 'available' || isReserving || isApiLoading || apiError) return;
 
     setSelectedSeat(seat);
@@ -141,36 +116,51 @@ function SeatMapPage({ onBookingSuccess }) {
     }
   };
 
-  // 예매 처리
-  const handleReservation = async () => {
-    if (!selectedSeat) return;
+const handleReservation = async () => {
+  if (!selectedSeat) return;
 
-    try {
-      setIsReserving(true);
-      const data = await reserveSeat(nickname, selectedSeat.id);
+  try {
+    setIsReserving(true);
 
-      if (!data.success) {
-        alert(data.message);
-        setIsReserving(false);
-        return;
-      }
-
-      alert("예매 성공 !");
-
-      onBookingSuccess({
-        seatId: selectedSeat.id,
-        nickname,
-        duration: data.data.duration,
-        rankingP: data.data.rankingPercent
-      });
-
-      setSelectedSeat(null); // 예매 후 선택 초기화
-    } catch (err) {
-      console.log("좌석 예매 실패:", err);
-    } finally {
+    // 예매 직전 좌석 상태 다시 확인
+    const seatData = await getASeat(selectedSeat.id);
+    if (!seatData.success) {
+      alert(seatData.message);
       setIsReserving(false);
+      return;
     }
-  };
+
+    if (seatData.data.status !== 'available') {
+      alert("이미 다른 사용자가 예매했습니다. 다른 좌석을 선택해주세요.");
+      refreshSeats(); // 좌석 상태 새로고침
+      setSelectedSeat(null);
+      setIsReserving(false);
+      return;
+    }
+
+    // 예매 진행
+    const data = await reserveSeat(nickname, selectedSeat.id);
+    if (!data.success) {
+      alert(data.message);
+      setIsReserving(false);
+      return;
+    }
+
+    alert("예매 성공 !");
+
+    onBookingSuccess({
+      seatId: selectedSeat.id,
+      nickname,
+      duration: data.data.duration,
+      rankingP: data.data.rankingPercent
+    });
+
+  } catch (err) {
+    console.log("좌석 예매 실패:", err);
+  } finally {
+    setIsReserving(false);
+  }
+};
 
   const isInteractionDisabled = isReserving || isApiLoading || apiError;
 
