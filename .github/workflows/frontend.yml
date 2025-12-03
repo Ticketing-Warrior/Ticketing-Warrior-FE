@@ -3,45 +3,40 @@ name: FE Production CI/CD
 on:
   push:
     branches:
-      - main   
+      - develop
+
 jobs:
   build_and_deploy:
     runs-on: ubuntu-latest
 
+    environment: AWS
+
     # 환경 변수 (job‑level)
     env:
-      AWS_REGION: ${{ vars.AWS_REGION }}          
-      S3_BUCKET_NAME: ${{ secrets.S3_BUCKET_NAME }}  # (실제 버킷 이름)
-      CF_DISTRIBUTION_ID: ${{ secrets.CF_DISTRIBUTION_ID }} # (CloudFront ID)
+      AWS_REGION: ${{ vars.AWS_REGION }}                
+      S3_BUCKET_NAME: ${{ secrets.S3_BUCKET_NAME }}   
+      CF_DISTRIBUTION_ID: ${{ secrets.CF_DISTRIBUTION_ID }}  
 
     steps:
-      # 코드 체크아웃
       - name: Checkout Code
         uses: actions/checkout@v4
 
-      # Docker Build & 정적 파일 추출
-      # - name: Docker Build and Extract Artifacts
-      #   id: build
-      #   run: |
-      #     # 이미지 빌드 (Dockerfile 안에서 npm install → npm run build 가 수행된다고 가정)
-      #     docker build -t frontend-builder .
-      #     # 컨테이너 실행 → /app/dist 를 호스트 /tmp/dist 로 복사
-      #     docker run --rm -v /tmp/dist:/dist frontend-builder \
-      #       sh -c 'cp -r /app/dist/. /dist'
+      # Node.js 설정
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
 
-      # Docker Build & 정적 파일 추출 스텝
-      - name: Docker Build and Extract Artifacts
-        id: build
-        run: |
-          # 1. 빌드 스테이지까지만 빌드하고 새로운 태그로 지정
-          # --target artifact 옵션을 사용해 Node.js 빌드 환경까지만 만듭니다.
-          docker build -t frontend-builder-artifact . --target artifact
-          # 2. 임시 컨테이너를 생성하여 파일을 추출할 준비
-          docker create --name build_extractor frontend-builder-artifact
-          # 3. 임시 컨테이너에서 호스트 /tmp/dist로 빌드 파일 복사
-          docker cp build_extractor:/app/dist/. /tmp/dist
-          # 4. 사용 후 임시 컨테이너 제거 (선택적)
-          docker rm build_extractor
+      # 의존성 설치
+      - name: Install Dependencies
+        run: npm ci
+
+      # 빌드 (환경변수 주입)
+      - name: Build
+        run: npm run build
+        env:
+          VITE_SERVER_API_URL: ${{ vars.VITE_SERVER_API_URL }}
 
       # AWS 인증 (IAM 권한)
       - name: Configure AWS Credentials
@@ -49,16 +44,16 @@ jobs:
         with:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          aws-region: ${{ env.AWS_REGION }}
+          aws-region: ${{ vars.AWS_REGION }}   
 
       # S3 배포 (정적 파일 동기화)
       - name: Deploy to S3
         run: |
-          aws s3 sync /tmp/dist s3://${{ env.S3_BUCKET_NAME }} --delete
+          aws s3 sync ./dist s3://${{ secrets.S3_BUCKET_NAME }} --delete
 
       # CloudFront 캐시 무효화
       - name: CloudFront Invalidation
         run: |
           aws cloudfront create-invalidation \
-            --distribution-id ${{ env.CF_DISTRIBUTION_ID }} \
+            --distribution-id ${{ secrets.CF_DISTRIBUTION_ID }} \
             --paths "/*"
