@@ -48,14 +48,15 @@ WORKDIR /app
 # 3️⃣ package.json, package-lock.json 복사 → 의존성 설치
 COPY package*.json ./
 # 개발 환경과 동일한 의존성 설치 (CI/CD 환경의 재현성 확보)
-RUN npm ci   # production‑only 의존성만 설치 
+RUN npm ci 
+# production‑only 의존성만 설치 
 
 # 4️⃣ 소스 전체 복사
 COPY . .
 
 # 5️⃣ 빌드 실행
 # Vite가 /app/dist 폴더에 정적 파일을 만듭니다.
-RUN npm run build  
+RUN npm run build
 
 # ------------------------------------------------------------
 # 6️⃣ 실제 배포용 이미지 (nginx 로 정적 파일 제공) - 이 부분은 제거합니다.
