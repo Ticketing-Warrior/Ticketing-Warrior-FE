@@ -130,7 +130,7 @@ const handleReservation = async () => {
       return;
     }
 
-    if (seatData.data.status !== 'available') {
+    if (seatData.data.seatState !== 'available') {
       alert("이미 다른 사용자가 예매했습니다. 다른 좌석을 선택해주세요.");
       refreshSeats(); // 좌석 상태 새로고침
       setSelectedSeat(null);
